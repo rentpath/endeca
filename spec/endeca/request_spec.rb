@@ -5,7 +5,7 @@ require File.join(File.dirname(__FILE__), %w[.. spec_helper])
 
 describe Endeca::Request do
   before do
-      @path = 'http://example.com/foobar'
+    @path = 'http://example.com/foobar'
   end
 
   describe '.perform' do
