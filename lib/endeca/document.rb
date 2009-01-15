@@ -6,6 +6,8 @@ module Endeca
     inherited_accessor :mappings, {}
     inherited_property :path
 
+    reader :id
+
     def self.map(mapping={}, &transformation)
       mapping.each do |key, transformed_key|
         mappings[key] = [transformed_key, transformation]
@@ -20,24 +22,33 @@ module Endeca
 
     alias_method :attributes, :properties
 
+    def ==(other)
+      id == other.id
+    end
+
+    def inspect
+      "#<#{self.class}:0x#{self.object_id.to_s(16)}>"
+    end
+
     def dimensions
       @dimensions = {}
-      raw['Dimensions'].each do |name, values|
+      (raw['Dimensions'] || {}).each do |name, values|
         values = Array === values ? values : [values]
         @dimensions[name] = values.map(&Dimension)
       end
       @dimensions
     end
 
-    EndecaIdRegexp = /^\d+$/
     def self.find(what, query_options={})
       case what
+      when Integer, /^\d+$/
+        by_id(what, query_options)
       when :first
         first(query_options)
       when :all
         all(query_options)
-      when EndecaIdRegexp
-        by_id(what, query_options)
+      else
+        all(what)
       end
     end
 
@@ -46,7 +57,7 @@ module Endeca
     end
 
     def self.all(query_options={})
-      new(request(query_options)['Records'])
+      DocumentCollection.new(request(query_options))
     end
 
     def self.by_id(id, query_options={})
@@ -54,7 +65,7 @@ module Endeca
     end
 
     def self.group_by(grouping, query_options={})
-      #Endeca::AggregateDocumentCollection.new(self, request(query_options))
+      #DocumentCollection.new(request(query_options)['Records'])
     end
 
     private
