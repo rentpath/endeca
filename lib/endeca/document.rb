@@ -57,7 +57,7 @@ module Endeca
     end
 
     def self.all(query_options={})
-      DocumentCollection.new(request(query_options))
+      DocumentCollection.new(request(query_options), self)
     end
 
     def self.by_id(id, query_options={})

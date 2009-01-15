@@ -25,6 +25,11 @@ describe Endeca::DocumentCollection do
       @document_collection.documents.size.should == 1
       @document_collection.documents.first.should == Endeca::Document.new(@document)
     end
+
+    it "should return the correct document class for subclassees" do
+      class ConcreteDocument < Endeca::Document; end
+      Endeca::DocumentCollection.new(@raw, ConcreteDocument).documents.first.class.should == ConcreteDocument
+    end
   end
 
   describe '#attributes' do

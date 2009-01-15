@@ -5,8 +5,9 @@ module Endeca
     extend Readers
 
     attr_reader :raw
-    def initialize(raw)
+    def initialize(raw, document_klass=Document)
       @raw = raw
+      @document_klass = document_klass
     end
 
     def attributes
@@ -43,7 +44,7 @@ module Endeca
     end
 
     def documents
-      @documents ||= (@raw['Records'] || []).map(&Document)
+      @documents ||= (@raw['Records'] || []).map(&@document_klass)
     end
 
     def refinements

@@ -35,7 +35,7 @@ describe Endeca::Document do
     end
 
     describe 'with :all' do 
-      it "should call .all and pass the query options" do
+      it "should call .all and pass the query options and self" do
         Endeca::Document.should_receive(:all).with(@query_options)
         Endeca::Document.find(:all, @query_options)
       end
@@ -98,17 +98,21 @@ describe Endeca::Document do
       @records = mock('RecordArray')
       @response = {'Records' => @records}
       Endeca::Document.
-        should_receive(:request).
-        with(@query_options).
+        stub!(:request).
         and_return(@response)
     end
 
     it 'should perform a request with the query options' do
+      Endeca::Document.
+        should_receive(:request).
+        with(@query_options).
+        and_return(@response)
+
       Endeca::Document.all(@query_options)
     end
 
-    it 'should create a new DocumentCollection from the full response' do
-      Endeca::DocumentCollection.should_receive(:new).with(@response)
+    it 'should create a new DocumentCollection from the full response and the document class' do
+      Endeca::DocumentCollection.should_receive(:new).with(@response, Endeca::Document)
       Endeca::Document.all(@query_options)
     end
   end
