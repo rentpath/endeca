@@ -19,12 +19,10 @@ require 'endeca'
 task :default => 'spec:run'
 
 PROJ.name = 'endeca'
-PROJ.authors = 'FIXME (who is writing this software)'
-PROJ.email = 'FIXME (your e-mail)'
-PROJ.url = 'FIXME (project homepage)'
+PROJ.authors = ['Rein Henrichs', 'Andy Stone']
+PROJ.email = ''
+PROJ.url = 'http://github.com/primedia/endeca-ruby'
 PROJ.version = Endeca::VERSION
-PROJ.rubyforge.name = 'endeca'
-
-PROJ.spec.opts << '--color'
+PROJ.rubyforge.name = 'endeca-ruby'
 
 # EOF
