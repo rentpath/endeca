@@ -78,6 +78,7 @@ module Endeca
     # Use the mappings hash to replace domain level query query_options with
     # their Endeca equivalent.
     def self.transform_query_options(query_options)
+      query_options = query_options.dup
       query_options.each do |key, value|
         if mappings[key]
           query_options.delete(key)
