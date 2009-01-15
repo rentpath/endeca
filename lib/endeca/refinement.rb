@@ -13,7 +13,7 @@ module Endeca
     end
 
     def inspect
-      "#<#{self.class}:0x#{self.object_id.to_s(16)} id:#{id} name:#{name}>"
+      "#<#{self.class}:0x#{self.object_id.to_s(16)} id:#{id} name:#{name.inspect}>"
     end
 
     def attributes
