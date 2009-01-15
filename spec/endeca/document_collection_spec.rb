@@ -46,7 +46,7 @@ describe Endeca::DocumentCollection do
 
   describe "#each" do
     it "should yield to the documents" do
-      block = lambda{|x| x}
+      block = lambda{1}
       @document_collection.documents.should_receive(:each).with(&block)
       @document_collection.each(&block)
     end
