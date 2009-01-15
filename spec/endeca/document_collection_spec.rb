@@ -6,8 +6,8 @@ describe Endeca::DocumentCollection do
     @document = mock('Document', :[] => nil)
     @refinement = mock('Refinement', :[] => [])
     @raw = {
-      'Records' => [@document],
-      'MetaInfo' => @metainfo,
+      'Records'     => [@document],
+      'MetaInfo'    => @metainfo,
       'Refinements' => [@refinement]
     }
     @document_collection = Endeca::DocumentCollection.new(@raw)
@@ -28,7 +28,8 @@ describe Endeca::DocumentCollection do
 
     it "should return the correct document class for subclassees" do
       class ConcreteDocument < Endeca::Document; end
-      Endeca::DocumentCollection.new(@raw, ConcreteDocument).documents.first.class.should == ConcreteDocument
+      collection = Endeca::DocumentCollection.new(@raw, ConcreteDocument)
+      colleciton.documents.first.class.should == ConcreteDocument
     end
   end
 
