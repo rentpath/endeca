@@ -50,12 +50,12 @@ module Endeca
       reader(*attrs) { |value| Integer(value) }
     end
 
-
     # Typecasts attributes as BigDecimal
     #
     # ==== Examples
     #   decimal_reader :price
     def decimal_reader(*attrs)
+      require 'bigdecimal' unless defined?(BigDecimal)
       reader(*attrs) { |value| BigDecimal(value.to_s) }
     end
 
