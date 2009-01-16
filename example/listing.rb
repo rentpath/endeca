@@ -1,3 +1,4 @@
+require 'lib/endeca'
 class Listing < Endeca::Document
   path 'http://10.130.83.75:9888/bridge/JSONControllerServlet.do'
 
