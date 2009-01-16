@@ -35,7 +35,7 @@ class Class
 
   def inherited_accessor(accessor, default = nil)
     instance_eval <<-RUBY, __FILE__, __LINE__ + 1
-      class << self; attr_accessor :#{accessor}; end
+      class << self; attr_writer :#{accessor}; end
       @#{accessor} = default
 
       def #{accessor}
