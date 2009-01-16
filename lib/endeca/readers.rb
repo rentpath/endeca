@@ -59,7 +59,7 @@ module Endeca
       reader(*attrs) { |value| BigDecimal(value.to_s) }
     end
 
-    # Typecasts attributes as a Perly boolean ("0" == false, "1" == true"
+    # Typecasts attributes as a Perly boolean ("0" == false, "1" == true")
     #
     # ==== Examples
     #   decimal_reader :price
