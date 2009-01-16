@@ -2,6 +2,8 @@ require 'lib/endeca'
 class Listing < Endeca::Document
   path 'http://10.130.83.75:9888/bridge/JSONControllerServlet.do'
 
+  map :id => 'R'
+
   reader \
     :country,
     :latitude,
@@ -21,5 +23,4 @@ class Listing < Endeca::Document
   add_reader :caret_delimited_array_reader do |value|
     value.split('^')
   end
-
 end
