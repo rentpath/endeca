@@ -18,6 +18,17 @@ require 'endeca'
 
 task :default => 'spec:run'
 
+desc "Simple benchmarking"
+task :benchmark do
+  sh('ruby example/benchmark.rb')
+end
+task :bm => :benchmark
+
+desc "Flog your code for Justice!"
+task :flog do
+  sh('flog lib/**/*.rb')
+end
+
 PROJ.name = 'endeca'
 PROJ.authors = ['Rein Henrichs', 'Andy Stone']
 PROJ.email = ''
