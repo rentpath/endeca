@@ -35,8 +35,12 @@ module Endeca
       self
     end
 
-    # Perform the mapping as defined for the current_value
-    def perform(current_value)
+    # Perform the mapping as defined for the current_query
+    #
+    # TODO: Need to be more aware of current_query and look
+    # for duplicate keys, etc...
+    def perform(current_query)
+      current_value = current_query[@old_key]
       result = if @transformation
                  @transformation.call(current_value)
                else

@@ -17,8 +17,8 @@ module Endeca
       query = query_options.dup
       query.each do |key, value|
         if mappings[key]
+          new_key, new_value = mappings[key].perform(query_options)
           query_options.delete(key)
-          new_key, new_value = mappings[key].perform(value)
           query_options.update({new_key => new_value})
         end
       end
