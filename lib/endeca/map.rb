@@ -1,11 +1,11 @@
 module Endeca
   class Map
-    attr_accessor :old_key, :new_key, :parent_hash, :delimeter, :transformation
+    attr_accessor :old_key, :new_key, :parent_hash, :delimiter, :transformation
 
     def initialize(old_key, new_key)
       @old_key = old_key
       @new_key = new_key 
-      @delimeter = "|"
+      @delimiter = "|"
     end
 
     # Mapping actually resides in another key, value pair.
@@ -25,7 +25,7 @@ module Endeca
 
     # When multiple values occur for a key, use this character to join on
     def join_with(character)
-      @delimeter = character
+      @delimiter = character
       self
     end
 
@@ -56,7 +56,7 @@ module Endeca
     def ==(other)
       @old_key == other.old_key &&
       @new_key == other.new_key &&
-      @delimeter == other.delimeter  &&
+      @delimiter == other.delimiter  &&
       @transformation == other.transformation
     end
   end
