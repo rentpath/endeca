@@ -2,17 +2,12 @@ module Endeca
   class Document
     extend ClassToProc
     extend Readers
+    extend Transformer
 
     inherited_accessor :mappings, {}
     inherited_property :path
 
     reader :id
-
-    def self.map(mapping={}, &transformation)
-      mapping.each do |key, transformed_key|
-        mappings[key] = [transformed_key, transformation]
-      end
-    end
 
     attr_reader :raw, :properties
     def initialize(record_raw=nil)
@@ -74,26 +69,6 @@ module Endeca
     def self.request(query_options)
       query_options = transform_query_options(query_options)
       Endeca::Request.perform(get_path, query_options)
-    end
-
-    # Use the mappings hash to replace domain level query query_options with
-    # their Endeca equivalent.
-    def self.transform_query_options(query_options)
-      query_options = query_options.dup
-      query_options.each do |key, value|
-        if mappings[key]
-          query_options.delete(key)
-          new_key, transformation = mappings[key]
-          current = query_options[new_key]
-          transformation ||= lambda { |x| x } # identity
-          result = case transformation.arity
-                   when 1; transformation.call(value)
-                   when 2; transformation.call(value, current)
-                   end
-          query_options.update({new_key => result})
-        end
-      end
-      query_options
     end
   end
 end
