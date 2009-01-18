@@ -27,12 +27,12 @@ describe Endeca::Refinement do
 
     it "includes the id" do
       @refinement.stub!(:id).and_return(1)
-      @refinement.inspect.should include('id:1')
+      @refinement.inspect.should include('id=1')
     end
 
     it "includes the inspected name" do
       @refinement.stub!(:name).and_return('A Name')
-      @refinement.inspect.should include('name:"A Name"')
+      @refinement.inspect.should include('name="A Name"')
     end
   end
 end
