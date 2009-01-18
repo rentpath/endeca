@@ -27,13 +27,13 @@ describe Endeca::Dimension do
     it "should include the id" do
       id = 123
       @dimension.stub!(:id).and_return(id)
-      @dimension.inspect.should include("id:#{id}")
+      @dimension.inspect.should include("id=#{id}")
     end
 
     it "should include the inspected name" do
       name = 'name'
       @dimension.stub!(:name).and_return(name)
-      @dimension.inspect.should include("name:#{name.inspect}")
+      @dimension.inspect.should include("name=#{name.inspect}")
     end
   end
 
