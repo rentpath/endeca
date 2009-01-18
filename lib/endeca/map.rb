@@ -1,9 +1,11 @@
 module Endeca
   class Map
-    def initialize(key, transformed_key)
-      @key = key
-      @transformed_key = transformed_key
-      @join_with = "|"
+    attr_accessor :old_key, :new_key, :parent_hash, :delimeter, :transformation
+
+    def initialize(old_key, new_key)
+      @old_key = old_key
+      @new_key = new_key 
+      @delimeter = "|"
     end
 
     # Mapping actually resides in another key, value pair.
@@ -23,13 +25,39 @@ module Endeca
 
     # When multiple values occur for a key, use this character to join on
     def join_with(character)
-      @join_with = character
+      @delimeter = character
       self
     end
 
-    #
+    # Code block to execute on the original data
     def transform(&block)
-      @transformation = &block
+      @transformation = block
+      self
+    end
+
+    # Perform the mapping as defined for the current_value
+    def perform(current_value)
+      result = if @transformation
+                 @transformation.call(current_value)
+               else
+                 current_value
+               end
+
+      if @parent_hash
+        @new_key = {@parent_hash.keys.first => @new_key}
+        result   = {@parent_hash.values.first => result}
+      end
+
+      return @new_key, result 
+    end
+
+    # Mapping object is equal to other mapping object if their attributes
+    # are equal
+    def ==(other)
+      @old_key == other.old_key &&
+      @new_key == other.new_key &&
+      @delimeter == other.delimeter  &&
+      @transformation == other.transformation
     end
   end
 end
