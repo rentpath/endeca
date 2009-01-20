@@ -1,10 +1,9 @@
 module Endeca
   class Map
-    attr_accessor :old_key, :new_key, :parent_hash, :delimiter, :transformation
-
+    attr_accessor :old_key, :new_key
     def initialize(old_key=nil, new_key=nil)
       @old_key = old_key
-      @new_key = new_key 
+      @new_key = new_key
       boolean
     end
 
@@ -29,7 +28,6 @@ module Endeca
       @into = hash
       @with ||= ':'
       @join ||= '|'
-      # do something with hash
       self
     end
 
@@ -68,10 +66,7 @@ module Endeca
     # Mapping object is equal to other mapping object if their attributes
     # are equal
     def ==(other)
-      @old_key == other.old_key &&
-      @new_key == other.new_key &&
-      @join == other.delimiter  &&
-      @transformation == other.transformation
+      equality_elements == other.equality_elements
     end
 
     private
@@ -104,7 +99,7 @@ module Endeca
       if new_value
         @new_query = {new_key => old_key, new_value => old_value}
       else
-        @new_query = {new_key => [old_key, old_value].join(@with || ':')}
+        @new_query = {new_key => [old_key, old_value].join(@with)}
       end
     end
 
@@ -113,6 +108,12 @@ module Endeca
       @new_query.each do |key, value|
         @new_query[key] = [@current_query[key], value].compact.join(@join)
       end
+    end
+
+    protected
+
+    def equality_elements # :nodoc:
+      [@old_key, @new_key, @join, @with, @join]
     end
   end
 end

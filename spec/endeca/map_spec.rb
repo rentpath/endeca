@@ -27,6 +27,32 @@ describe Endeca::Map do
     end
   end
 
+  describe "#into" do
+    it "should assign the hash to map the given query hash into" do
+      @map.into(:foo => :bar).instance_variable_get(:@into).should == {:foo => :bar}
+    end
+
+    it "should assign the default character to join keys to values with" do
+      @map.into(:foo => :bar).instance_variable_get(:@with).should == ':'
+    end
+
+    it "should assign the default character used to join key/value pairs" do
+      @map.into(:foo => :bar).instance_variable_get(:@join).should == '|'
+    end
+  end
+
+  describe "#with" do
+    it "should assign the character to join keys to values with" do
+      @map.with('*').instance_variable_get(:@with).should == '*'
+    end
+  end
+
+  describe "#join" do
+    it "should assign the character used to join key/value pairs" do
+      @map.join('*').instance_variable_get(:@join).should == '*'
+    end
+  end
+
   describe "#boolean" do
     it "should convert a true value to its integral equivalent" do
       @map.boolean.perform(:foo => true).should == {:bizz => 1}
@@ -34,6 +60,12 @@ describe Endeca::Map do
 
     it "should convert a false value to its integral equivalent" do
       @map.boolean.perform(:foo => false).should == {:bizz => 0}
+    end
+  end
+
+  describe "#==" do
+    it "is true if the keys, join and transformations are equivalent" do
+      Endeca::Map.new(:foo, :bar).into(:M).should == Endeca::Map.new(:foo, :bar).into(:M)
     end
   end
 end
