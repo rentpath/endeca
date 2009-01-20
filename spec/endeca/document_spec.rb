@@ -23,9 +23,10 @@ describe Endeca::Document do
       it "should join the key and value on the delimiter" do
         Endeca::Document.map(:state => :propertystate).into(:ntk => :ntt)
         Endeca::Document.map(:city => :propertycity).into(:ntk => :ntt)
-
-        Endeca::Document.transform_query_options(:city => 'Atlanta', :state => 'Georgia').
-          should == {:ntk => 'propertycity|propertystate', :ntt => 'Atlanta|Georgia'}
+        [
+          {:ntk=>"propertycity|propertystate", :ntt=>"Atlanta|Georgia"},
+          {:ntk=>"propertystate|propertycity", :ntt=>"Georgia|Atlanta"}
+        ].should include Endeca::Document.transform_query_options(:city => 'Atlanta', :state => 'Georgia')
       end
     end
 
