@@ -23,8 +23,8 @@ An Endeca client library for Ruby.
     boolean_reader :isawesome => :awesome?
   end
 
-  Listing.find(1234).awesome?				# => true
-  Listing.find(:all, :per_page => 10).size	# => 10
+  Listing.find(1234).awesome?              # => true
+  Listing.find(:all, :per_page => 10).size # => 10
 
 == REQUIREMENTS:
 
