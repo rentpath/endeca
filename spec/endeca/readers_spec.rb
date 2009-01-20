@@ -57,6 +57,14 @@ describe Endeca::Readers do
     end
   end
 
+  describe ".float_reader" do
+    it "adds a reader that casts the value to an float" do
+      Helper.float_reader(:helper_id)
+      @helper.stub!(:attributes).and_return("helper_id" => "1.9234")
+      @helper.helper_id.should == Float("1.9234")
+    end
+  end
+
   describe ".boolean_reader" do
     it "adds a reader that casts the value to an boolean" do
       Helper.boolean_reader(:helper_id)

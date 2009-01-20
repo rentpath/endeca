@@ -57,6 +57,14 @@ module Endeca
       reader(*attrs) { |value| BigDecimal(value.to_s) }
     end
 
+    # Typecasts attributes as floats 
+    #
+    # ==== Examples
+    #   float_reader :latitude, :longitude
+    def float_reader(*attrs)
+      reader(*attrs) { |value| Float(value) }
+    end
+
     # Typecasts attributes as a Perly boolean ("0" == false, "1" == true")
     #
     # ==== Examples
