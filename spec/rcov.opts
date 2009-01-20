@@ -1,0 +1,5 @@
+--text-summary
+--exclude
+  json,FakeWeb,rcov.rb,rspec,spec
+--sort
+  coverage
