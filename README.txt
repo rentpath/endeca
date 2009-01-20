@@ -1,32 +1,44 @@
 endeca
-    by FIXME (your name)
-    FIXME (url)
+  by Rein Henrichs and Andy Stone
 
 == DESCRIPTION:
 
-FIXME (describe your package)
+An Endeca client library for Ruby.
 
 == FEATURES/PROBLEMS:
 
-* FIXME (list of features or problems)
-
 == SYNOPSIS:
+  class Listing < Endeca::Document
+    path 'http://endeca.example.com/api'
+ 
+    map :id => 'R'
+    map(:expand_refinements => :expand_all_dims).into(:M)
+ 
+    reader \
+      :latitude,
+      :longitude,
+ 
+    integer_reader :endeca_id
+ 
+    boolean_reader :isawesome => :awesome?
+  end
 
-  FIXME (code sample of usage)
+  Listing.find(1234)
+  Listing.find(:all, :expand_refinements => true)
 
 == REQUIREMENTS:
 
-* FIXME (list of requirements)
+* FakeWeb (for running tests)
 
 == INSTALL:
 
-* FIXME (sudo gem install, anything else)
+  sudo gem install primedia-endeca --source=http://gems.github.com
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008 FIXME (different license?)
+Copyright (c) 2008 PRIMEDIA Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
