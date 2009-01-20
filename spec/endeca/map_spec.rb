@@ -17,8 +17,8 @@ describe Endeca::Map do
     end
 
     it "should nest in parent_hash" do
-      @map.in({:bip => :bop}).perform(@query).
-        should == {:bip => :bizz, :bop => "bazz"}
+      @map.into({:bip => :bop}).perform(@query).
+        should == {:bip => "bizz", :bop => "bazz"}
     end
 
     it "should join the new value with the existing value" do

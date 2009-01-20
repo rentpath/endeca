@@ -28,13 +28,24 @@ describe Endeca::Document do
       end
     end
 
-    describe "with two maps that join on the same key" do
+    describe "with two maps that join on the same key in a parent hash" do
       it "should join the key and value on the delimiter" do
-        Endeca::Document.map(:state => :propertystate).in(:ntk => :ntt).join('|')
-        Endeca::Document.map(:city => :propertycity).in(:ntk => :ntt).join('|')
+        Endeca::Document.map(:state => :propertystate).into(:ntk => :ntt)
+        Endeca::Document.map(:city => :propertycity).into(:ntk => :ntt)
 
         Endeca::Document.transform_query_options(:city => 'Atlanta', :state => 'Georgia').
           should == {:ntk => 'propertycity|propertystate', :ntt => 'Atlanta|Georgia'}
+      end
+    end
+
+    describe "with two maps that join on the same key without mapping to a hash" do
+      it "should join on the delimiter" do
+        Endeca::Document.map(:limit => :recs_per_page).into(:M)
+        Endeca::Document.map(:expand_refinements => :expand_all_dims).into(:M)
+
+        # Hashes are not ordered and order is not important
+        [{:M => "recs_per_page:10|expand_all_dims:1"}, {:M => "expand_all_dims:1|recs_per_page:10"}].
+          should include(Endeca::Document.transform_query_options(:limit => 10, :expand_refinements => 1))
       end
     end
   end

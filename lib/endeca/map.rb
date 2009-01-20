@@ -7,24 +7,33 @@ module Endeca
       @new_key = new_key 
     end
 
-    # Mapping actually resides in another key, value pair.
+    # Mapping actually resides in another key, value pair. Uses Endeca default
+    # join characters (can be overridden by specifying +with+ and/or +join+).
     #
     # Example:
     #   map(:city => :propertycity).in(:ntk => ntt)
     #
     #   Document.all(:city => 'Atlanta')   =>
     #     ?ntk=propercity&ntt=>Atlanta
-    def in(hash)
-      @parent_hash = hash
+    def into(hash)
+      @into = hash
+      @with ||= ':'
+      @join ||= '|'
       # do something with hash
       self
     end
 
-    alias_method :as, :in
+    # When mapping multiple key/value pairs to a single parameter value (via
+    # +into+), use this character to join a key with a value.
+    def with(character)
+      @with = character
+      self
+    end
 
-    # When multiple values occur for a key, use this character to join on
+    # When mapping multiple key/value pairs to one or two parameter values (via
+    # +into+), use this character to join each pair.
     def join(character)
-      @delimiter = character
+      @join = character
       self
     end
 
@@ -40,7 +49,7 @@ module Endeca
 
       perform_transformation
       perform_map
-      perform_in
+      perform_into
       perform_join
 
       return @new_query
@@ -51,7 +60,7 @@ module Endeca
     def ==(other)
       @old_key == other.old_key &&
       @new_key == other.new_key &&
-      @delimiter == other.delimiter  &&
+      @join == other.delimiter  &&
       @transformation == other.transformation
     end
 
@@ -66,17 +75,21 @@ module Endeca
       @new_query = {@new_key => @current_value}
     end
 
-    def perform_in
-      return unless @parent_hash
-      old_key, old_value = @new_query.to_a.flatten
-      new_key, new_value = @parent_hash.to_a.flatten
-      @new_query = {new_key => old_key, new_value => old_value}
+    def perform_into
+      return unless @into
+      old_key, old_value = Array(@new_query).flatten
+      new_key, new_value = Array(@into).flatten
+      if new_value
+        @new_query = {new_key => old_key, new_value => old_value}
+      else
+        @new_query = {new_key => [old_key, old_value].join(@with || ':')}
+      end
     end
 
     def perform_join
-      return unless @delimiter
+      return unless @join
       @new_query.each do |key, value|
-        @new_query[key] = [@current_query[key], value].compact.join(@delimiter)
+        @new_query[key] = [@current_query[key], value].compact.join(@join)
       end
     end
   end
