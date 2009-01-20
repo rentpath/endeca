@@ -3,9 +3,7 @@ module Endeca
     def add_reader(name, &block)
       meta = (class << self; self; end)
       meta.instance_eval do
-        define_method name do |*attrs|
-          reader(*attrs, &block)
-        end
+        define_method(name) { |*attrs| reader(*attrs, &block) }
       end
     end
 
