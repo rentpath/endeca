@@ -1,5 +1,5 @@
 endeca
-    by Rein Henrichs and Andy Stone
+  by Rein Henrichs and Andy Stone
 
 == DESCRIPTION:
 
@@ -8,22 +8,23 @@ An Endeca client library for Ruby.
 == FEATURES/PROBLEMS:
 
 == SYNOPSIS:
-	class Listing < Endeca::Document
-	  path 'http://endeca.example.com/api'
+  class Listing < Endeca::Document
+    path 'http://endeca.example.com/api'
+ 
+    map :id => 'R'
+    map(:expand_refinements => :expand_all_dims).into(:M)
+ 
+    reader \
+      :latitude,
+      :longitude,
+ 
+    integer_reader :endeca_id
+ 
+    boolean_reader :isawesome => :awesome?
+  end
 
-	  map :id => 'R'
-	  map(:expand_refinements => :expand_all_dims).into(:M)
-
-	  reader \
-		:latitude,
-		:longitude,
-
-	  integer_reader \
-		:endeca_id
-
-	  boolean_reader \
-		:isawesome => :awesome?
-	end
+  Listing.find(1234)
+  Listing.find(:all, :expand_refinements => true)
 
 == REQUIREMENTS:
 
@@ -31,7 +32,7 @@ An Endeca client library for Ruby.
 
 == INSTALL:
 
-* sudo gem install primedia-endeca --source=http://gems.github.com
+  sudo gem install primedia-endeca --source=http://gems.github.com
 
 == LICENSE:
 
