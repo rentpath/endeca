@@ -37,9 +37,8 @@ describe Endeca::Readers do
     describe "with a hash and a block" do
       it "adds a reader that returns the corresponding element, cast by calling the block" do
         @helper.reader(:helper_id => :succ_helper_id){|id| id.succ}
-        a_helper = @helper.new('Properties' => {'helper_id' => "1"})
-        a_helper.should respond_to(:succ_helper_id)
-        a_helper.succ_helper_id.should == "1".succ
+        @a_helper.should respond_to(:succ_helper_id)
+        @a_helper.succ_helper_id.should == "1".succ
       end
     end
   end
