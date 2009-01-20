@@ -1,6 +1,5 @@
 module Endeca
   class Map
-    attr_accessor :old_key, :new_key
     def initialize(old_key=nil, new_key=nil)
       @old_key = old_key
       @new_key = new_key
