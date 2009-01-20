@@ -3,7 +3,7 @@ class Listing < Endeca::Document
   path 'http://10.130.83.75:9888/bridge/JSONControllerServlet.do'
 
   map :id => 'R'
-  map_boolean(:expand_refinements => :expand_all_dims).into(:M)
+  map(:expand_refinements => :expand_all_dims).into(:M)
 
   reader \
     :country,
