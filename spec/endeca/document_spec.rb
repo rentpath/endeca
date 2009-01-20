@@ -19,15 +19,6 @@ describe Endeca::Document do
       end
     end
 
-    describe "with a transformation block" do
-      it "should assign the mapping with the block" do
-        identity = lambda{ |x| x }
-
-        Endeca::Document.map({:id => :endecaID}).transform(&identity)
-        Endeca::Document.mappings[:id].transformation.should == identity
-      end
-    end
-
     describe "with two maps that join on the same key in a parent hash" do
       it "should join the key and value on the delimiter" do
         Endeca::Document.map(:state => :propertystate).into(:ntk => :ntt)
