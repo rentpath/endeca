@@ -12,7 +12,7 @@ describe Endeca::Map do
     end
 
     it "should transform the value based on the block" do
-      map = @map.transform{|val| val.upcase}
+      map = @map.transform{|val| val.to_s.upcase}
       map.perform(@query).should == {:bizz => "BAZZ"}
     end
 
@@ -24,6 +24,16 @@ describe Endeca::Map do
     it "should join the new value with the existing value" do
       map = @map.join('|')
       map.perform(@query).should == {:bizz => "somevalue|bazz"}
+    end
+  end
+
+  describe "#boolean" do
+    it "should convert a true value to its integral equivalent" do
+      @map.boolean.perform(:foo => true).should == {:bizz => 1}
+    end
+
+    it "should convert a false value to its integral equivalent" do
+      @map.boolean.perform(:foo => false).should == {:bizz => 0}
     end
   end
 end

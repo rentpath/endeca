@@ -2,10 +2,20 @@ module Endeca
   class Map
     attr_accessor :old_key, :new_key, :parent_hash, :delimiter, :transformation
 
-    def initialize(old_key, new_key)
+    def initialize(old_key=nil, new_key=nil)
       @old_key = old_key
       @new_key = new_key 
+      boolean
     end
+
+    def boolean
+      @boolean = true
+      add_transformation { |value| value == true ? 1 : value }
+      add_transformation { |value| value == false ? 0 : value }
+      self
+    end
+
+    def boolean?; @boolean end
 
     # Mapping actually resides in another key, value pair. Uses Endeca default
     # join characters (can be overridden by specifying +with+ and/or +join+).
@@ -39,7 +49,7 @@ module Endeca
 
     # Code block to execute on the original data
     def transform(&block)
-      @transformation = block
+      add_transformation block
       self
     end
 
@@ -66,9 +76,21 @@ module Endeca
 
     private
 
+    def transformations
+      @transformations ||= []
+    end
+
+    def add_transformation(transformation = nil, &block)
+      transformations.push transformation if transformation
+      transformations.push block if block_given?
+    end
+
     def perform_transformation
       current_value = @current_query[@old_key]
-      @current_value = (@transformation || lambda{|x| x})[current_value]
+      transformations.each do |transformation|
+        current_value = transformation.call(current_value)
+      end
+      @current_value = current_value
     end
 
     def perform_map

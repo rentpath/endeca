@@ -29,6 +29,10 @@ describe Endeca::Transformer do
       Helper.map :foo => :bar
       Helper.mappings[:foo].class.should == Endeca::Map 
     end
+
+    it "should create a boolean mapping" do
+      Helper.map(:foo => :bar).should be_boolean
+    end
   end
 
   describe ".transform_query_options" do

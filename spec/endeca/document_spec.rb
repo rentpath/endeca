@@ -26,7 +26,7 @@ describe Endeca::Document do
         [
           {:ntk=>"propertycity|propertystate", :ntt=>"Atlanta|Georgia"},
           {:ntk=>"propertystate|propertycity", :ntt=>"Georgia|Atlanta"}
-        ].should include Endeca::Document.transform_query_options(:city => 'Atlanta', :state => 'Georgia')
+        ].should include(Endeca::Document.transform_query_options(:city => 'Atlanta', :state => 'Georgia'))
       end
     end
 
