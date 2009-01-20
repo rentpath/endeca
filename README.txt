@@ -14,7 +14,7 @@ An Endeca client library for Ruby.
     map :id => 'R'
     map(:expand_refinements => :expand_all_dims).into(:M)
  
-    reader \
+    float_reader \
       :latitude,
       :longitude,
  
