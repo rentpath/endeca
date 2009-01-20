@@ -1,4 +1,10 @@
 module Endeca
+  # Endeca Documents provide accessors for document properties
+  # returned by an Endeca query. Interesting Document properties must be
+  # declared with reader to be accessible on the object.
+  #
+  # The +reader+ declaration provided by Readers can also handle basic data transformations (i.e.
+  # typecasting) and a few basic examples are provided (i.e. +integer_reader+).
   class Document
     extend ClassToProc
     extend Readers
@@ -25,6 +31,7 @@ module Endeca
       "#<#{self.class}:0x#{self.object_id.to_s(16)}>"
     end
 
+    # Returns the collection of Endeca::Dimension for the given Document
     def dimensions
       return @dimensions if @dimensions
       @dimensions = {}
@@ -35,6 +42,34 @@ module Endeca
       @dimensions
     end
 
+    # Find operates with three distinct retrieval approaches:
+    #
+    # * Find by id - This is a specific id (1) or id string ("1")
+    # * Find first - This will return the first record matching the query options
+    #   used
+    # * Find all - This will return a collection of Documents matching the
+    #   query options. This is the default behavior of find if only query options
+    #   are passed.
+    #
+    # ==== Parameters
+    #
+    # Find accepts a query options hash. These options are either passed
+    # directly to Endeca or mapped (by use of +map+) to new parameters that are
+    # passed to Endeca.
+    #
+    # ==== Examples
+    #
+    #   # find by id
+    #   Listing.find(1)   # returns the Document for ID = 1
+    #   Listing.find('1') # returns the Document for ID = 1
+    #
+    #   # find all
+    #   Listing.find(:all) # returns a collection of Documents 
+    #   Listing.find(:all, :available => true)
+    #
+    #   # find first
+    #   Listing.find(:first) # Returns the first Document for the query
+    #   Listing.find(:first, :available => true)
     def self.find(what, query_options={})
       case what
       when Integer, /^\d+$/
@@ -48,19 +83,22 @@ module Endeca
       end
     end
 
+    # Returns the first Document matching the query options.
     def self.first(query_options={})
       new(request(query_options)['Records'].first)
     end
 
+    # Returns all Documents matching the query options.
     def self.all(query_options={})
       DocumentCollection.new(request(query_options), self)
     end
 
+    # Returns a Document by id
     def self.by_id(id, query_options={})
       first(query_options.merge(:id => id))
     end
 
-    def self.group_by(grouping, query_options={})
+    def self.group_by(grouping, query_options={}) # :nodoc:
       #DocumentCollection.new(request(query_options)['Records'])
     end
 

@@ -68,7 +68,7 @@ module Endeca
     # Typecasts attributes as a Perly boolean ("0" == false, "1" == true")
     #
     # ==== Examples
-    #   decimal_reader :price
+    #   boolean_reader :price
     def boolean_reader(*attrs)
       reader(*attrs) { |value| value == "1" ? true : false }
     end

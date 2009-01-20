@@ -6,6 +6,7 @@ module Endeca
       boolean
     end
 
+    # Convert true and false into their Endeca equivalents
     def boolean
       @boolean = true
       add_transformation { |value| value == true ? 1 : value }
