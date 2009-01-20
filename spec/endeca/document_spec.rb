@@ -10,6 +10,7 @@ describe Endeca::Document do
     after do
       Endeca::Document.mappings = {}
     end
+
     describe "with a mapping value" do
       it "should assign the mapping with a nil transformation" do
         Endeca::Document.map(:id => :endecaID)
@@ -24,6 +25,16 @@ describe Endeca::Document do
 
         Endeca::Document.map({:id => :endecaID}).transform(&identity)
         Endeca::Document.mappings[:id].transformation.should == identity
+      end
+    end
+
+    describe "with two maps that join on the same key" do
+      it "should join the key and value on the delimiter" do
+        Endeca::Document.map(:state => :propertystate).in(:ntk => :ntt).join('|')
+        Endeca::Document.map(:city => :propertycity).in(:ntk => :ntt).join('|')
+
+        Endeca::Document.transform_query_options(:city => 'Atlanta', :state => 'Georgia').
+          should == {:ntk => 'propertycity|propertystate', :ntt => 'Atlanta|Georgia'}
       end
     end
   end
@@ -74,7 +85,7 @@ describe Endeca::Document do
 
           @document.
             stub!(:raw).
-            and_return({'Dimensions' => {"key" => dimension_hash}}) 
+            and_return({'Dimensions' => {"key" => dimension_hash}})
 
           Endeca::Dimension.
             should_receive(:new).
@@ -93,7 +104,7 @@ describe Endeca::Document do
       end
     end
 
-    describe 'with :all' do 
+    describe 'with :all' do
       it "should call .all and pass the query options and self" do
         Endeca::Document.should_receive(:all).with(@query_options)
         Endeca::Document.find(:all, @query_options)

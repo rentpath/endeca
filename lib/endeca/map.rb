@@ -5,7 +5,6 @@ module Endeca
     def initialize(old_key, new_key)
       @old_key = old_key
       @new_key = new_key 
-      @delimiter = "|"
     end
 
     # Mapping actually resides in another key, value pair.
@@ -24,7 +23,7 @@ module Endeca
     alias_method :as, :in
 
     # When multiple values occur for a key, use this character to join on
-    def join_with(character)
+    def join(character)
       @delimiter = character
       self
     end
@@ -36,23 +35,15 @@ module Endeca
     end
 
     # Perform the mapping as defined for the current_query
-    #
-    # TODO: Need to be more aware of current_query and look
-    # for duplicate keys, etc...
     def perform(current_query)
-      current_value = current_query[@old_key]
-      result = if @transformation
-                 @transformation.call(current_value)
-               else
-                 current_value
-               end
+      @current_query = current_query
 
-      if @parent_hash
-        @new_key = {@parent_hash.keys.first => @new_key}
-        result   = {@parent_hash.values.first => result}
-      end
+      perform_transformation
+      perform_map
+      perform_in
+      perform_join
 
-      return @new_key, result 
+      return @new_query
     end
 
     # Mapping object is equal to other mapping object if their attributes
@@ -62,6 +53,31 @@ module Endeca
       @new_key == other.new_key &&
       @delimiter == other.delimiter  &&
       @transformation == other.transformation
+    end
+
+    private
+
+    def perform_transformation
+      current_value = @current_query[@old_key]
+      @current_value = (@transformation || lambda{|x| x})[current_value]
+    end
+
+    def perform_map
+      @new_query = {@new_key => @current_value}
+    end
+
+    def perform_in
+      return unless @parent_hash
+      old_key, old_value = @new_query.to_a.flatten
+      new_key, new_value = @parent_hash.to_a.flatten
+      @new_query = {new_key => old_key, new_value => old_value}
+    end
+
+    def perform_join
+      return unless @delimiter
+      @new_query.each do |key, value|
+        @new_query[key] = [@current_query[key], value].compact.join(@delimiter)
+      end
     end
   end
 end
