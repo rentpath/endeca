@@ -99,7 +99,7 @@ module Endeca
       if new_value
         @new_query = {new_key => old_key, new_value => old_value}
       else
-        @new_query = {new_key => [old_key, old_value].join(@with)}
+        @new_query = {new_key => [old_key, old_value].compact.join(@with)}
       end
     end
 
