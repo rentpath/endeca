@@ -1,27 +1,36 @@
 require 'lib/endeca'
 class Listing < Endeca::Document
-  path 'http://10.130.83.75:9888/bridge/JSONControllerServlet.do'
-
-  map :id => 'R'
-  map(:expand_refinements => :expand_all_dims).into(:M)
+  path 'http://192.168.3.218:8888/bridge/JSONControllerServlet.do'
 
   reader \
-    :country,
-    :latitude,
-    :longitude,
-    :mda_code,
-    :metro,
-    :zipcode
+    :address,
+    :contact,
+    :description,
+    :header,
+    :phone
 
   integer_reader \
-    :deposit,
-    :listing_id,
-    :endeca_id
+    'RecordSpec' => :listing_id
 
-  boolean_reader \
-    :isapartment => :apartment?
+  float_reader \
+    :longitude,
+    :latitude
 
-  add_reader :caret_delimited_array_reader do |value|
-    value.split('^')
-  end
+  decimal_reader :rent => :price
+
+  boolean_reader :showemail => :show_email?
+
+  reader(:rh_url => :details_url) {|url| "/{url}"}
+
+  add_reader(:caret_delimited_reader) {|string| string.split('^+^')}
+
+  caret_delimited_reader \
+    :thumbnails,
+    :graphicurl => :graphic_urls
+
+  def coordinates; [latitude, longitude] end
+  def image_url; (graphic_urls || thumbnails).first rescue nil end
+
+  dim_reader :zip, :bathrooms, :bedrooms
+
 end
