@@ -31,8 +31,7 @@ module Endeca
         variable = variable.to_s
         if block_given?
           define_method(method) do
-            value = attributes[variable]
-            value && block.call(value)
+            block.call(attributes[variable])
           end
         else
           define_method(method) { attributes[variable] }
@@ -73,6 +72,15 @@ module Endeca
       reader(*attrs) { |value| value == "1" ? true : false }
     end
 
-
+    def dim_reader(*methods, &block)
+      methods.each do |method|
+        block ||= lambda {|x| x}
+        define_method method do
+          dim = dimensions[method.to_s]
+          name = dim && dim.name
+          block.call(name)
+        end
+      end
+    end
   end
 end

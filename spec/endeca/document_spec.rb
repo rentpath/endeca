@@ -82,7 +82,7 @@ describe Endeca::Document do
       end
 
       describe 'with a raw Dimensions hash with a key "key" with one element' do
-        it 'should return a hash with an array of that element at the key "key"' do
+        it 'should return a hash with that dimension at the key "key"' do
           dimension_hash = mock('Dimension Hash')
           dimension = mock(Endeca::Dimension)
 
@@ -95,7 +95,7 @@ describe Endeca::Document do
             with(dimension_hash).
             and_return(dimension)
 
-          @document.dimensions["key"].should == [dimension]
+          @document.dimensions["key"].should == dimension
         end
       end
     end

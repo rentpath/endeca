@@ -71,4 +71,15 @@ describe Endeca::Readers do
       @a_helper.helper_id.should == true
     end
   end
+
+  describe ".dim_reader" do
+    describe "with a symbol" do
+      it "adds a reader that returns the name of that dimension" do
+        @helper.dim_reader(:type)
+        dimensions = {"type" => mock('type', :name => 'a type')}
+        @a_helper.stub!(:dimensions).and_return(dimensions)
+        @a_helper.type.should == 'a type'
+      end
+    end
+  end
 end

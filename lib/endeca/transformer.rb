@@ -3,7 +3,7 @@ module Endeca
     # Requires existence of mappings accessor
     def map(mapping = {})
       if mapping.length > 1
-        raise (ArgumentError, "map only accepts one key=>value pair") 
+        raise ArgumentError, "map only accepts one key=>value pair" 
       end
 
       mapping.each do |key, transformed_key|
