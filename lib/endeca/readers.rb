@@ -1,4 +1,6 @@
 module Endeca
+  class ReaderError < ::StandardError; end
+
   module Readers
     def add_reader(name, &block)
       meta = (class << self; self; end)
@@ -31,7 +33,11 @@ module Endeca
         variable = variable.to_s
         if block_given?
           define_method(method) do
-            block.call(attributes[variable])
+            begin
+              block.call(attributes[variable])
+            rescue StandardError => e
+              raise Endeca::ReaderError, e
+            end
           end
         else
           define_method(method) { attributes[variable] }

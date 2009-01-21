@@ -82,4 +82,13 @@ describe Endeca::Readers do
       end
     end
   end
+
+  describe "exception handling" do
+    it "should raise an Endeca::Reader error if the call fails" do
+      helper = Class.new(Endeca::Document)
+      helper.integer_reader(:helper_id)
+      helper = helper.new('Properties' => {'helper_id' => 'W'})
+      lambda{helper.helper_id}.should raise_error(Endeca::ReaderError)
+    end
+  end
 end
