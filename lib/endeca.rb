@@ -17,7 +17,7 @@ require 'endeca/document'
 module Endeca
 
   # :stopdoc:
-  VERSION = '0.1.0'
+  VERSION = '0.9.0'
   # :startdoc:
 
   # Returns the version string for the library.
@@ -26,6 +26,7 @@ module Endeca
     VERSION
   end
 
+  # Set Endeca.debug = true to turn on query logging
   class << self
     attr_accessor :debug
     attr_accessor :logger
