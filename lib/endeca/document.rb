@@ -85,7 +85,8 @@ module Endeca
 
     # Returns the first Document matching the query options.
     def self.first(query_options={})
-      new(request(query_options)['Records'].first)
+      records = request(query_options)['Records']
+      records && new(records.first)
     end
 
     # Returns all Documents matching the query options.

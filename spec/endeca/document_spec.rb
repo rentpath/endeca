@@ -156,6 +156,13 @@ describe Endeca::Document do
         with(:document)
       Endeca::Document.first(:id => '1234')
     end
+
+    describe "when no matching record is returned" do
+      it "should be nil" do
+      Endeca::Request.stub!(:perform).and_return({'Records' => nil})
+      Endeca::Document.first(:id => '1234').should be_nil
+      end
+    end
   end
 
   describe '.by_id' do
