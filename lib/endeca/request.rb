@@ -30,6 +30,8 @@ module Endeca
     def get_response #:nodoc:
       http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Get.new(uri.request_uri)
+
+      Endeca.logger.debug "ENDECA REQUEST: uri=#{uri}" if Endeca.debug
       http.request(request)
     end
 

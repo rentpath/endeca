@@ -2,6 +2,7 @@ require 'rubygems'
 $:.unshift(File.dirname(__FILE__))
 require 'net/http'
 require 'json'
+require 'logger'
 require 'core_ext'
 require 'class_to_proc'
 require 'endeca/readers'
@@ -24,4 +25,12 @@ module Endeca
   def self.version
     VERSION
   end
+
+  class << self
+    attr_accessor :debug
+    attr_accessor :logger
+  end
+
+  self.debug  = false
+  self.logger = Logger.new(STDOUT)
 end
