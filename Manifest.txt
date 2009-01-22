@@ -2,6 +2,7 @@ History.txt
 Manifest.txt
 README.rdoc
 Rakefile
+endeca.gemspec
 example/benchmark.rb
 example/listing.rb
 lib/class_to_proc.rb
