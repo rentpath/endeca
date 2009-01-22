@@ -99,10 +99,6 @@ module Endeca
       first(query_options.merge(:id => id))
     end
 
-    def self.group_by(grouping, query_options={}) # :nodoc:
-      #DocumentCollection.new(request(query_options)['Records'])
-    end
-
     private
 
     def self.request(query_options)
