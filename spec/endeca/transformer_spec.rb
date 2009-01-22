@@ -30,6 +30,11 @@ describe Endeca::Transformer do
       Helper.mappings[:foo].class.should == Endeca::Map 
     end
 
+    it "should add Map object to mappings with only one argument" do
+      Helper.map :foo
+      Helper.mappings[:foo].class.should == Endeca::Map 
+    end
+
     it "should create a boolean mapping" do
       Helper.map(:foo => :bar).should be_boolean
     end

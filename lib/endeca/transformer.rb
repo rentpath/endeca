@@ -1,12 +1,18 @@
 module Endeca
   module Transformer
     # Requires existence of mappings accessor
+    # ===Example
+    #   map(:old_name => :new_name)
+    #   map(:new_name)
     def map(mapping = {})
+      mapping = {mapping => mapping} if Symbol === mapping
+
       if mapping.length > 1
         raise ArgumentError, "map only accepts one key=>value pair" 
       end
 
       mapping.each do |key, transformed_key|
+        transformed_key = key unless transformed_key
         return mappings[key] = Map.new(key, transformed_key)
       end
     end
