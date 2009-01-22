@@ -252,4 +252,32 @@ describe Endeca::Document do
       end
     end
   end
+
+  describe "with default query parameters" do
+    before do
+      Endeca::Document.default_params :foo => :bar
+    end
+
+    after do
+      Endeca::Document.default_params({})
+    end
+
+    it "should get the default params" do
+      Endeca::Document.get_default_params.should == {:foo => :bar}
+    end
+
+    it "should include the default parameters" do
+      Endeca::Request.should_receive(:perform).with(anything, {:foo => :bar})
+      Endeca::Document.request({})
+    end
+
+    describe "that are mapped" do
+      it "should map the default parameters" do
+        Endeca::Document.map(:foo => :new_foo)
+        Endeca::Request.should_receive(:perform).with(anything, {:new_foo => :bar})
+        Endeca::Document.request({})
+      end
+    end
+  end
+
 end

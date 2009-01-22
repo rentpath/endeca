@@ -12,6 +12,7 @@ module Endeca
 
     inherited_accessor :mappings, {}
     inherited_property :path
+    inherited_property :default_params, {}
 
     reader :id
 
@@ -104,7 +105,7 @@ module Endeca
     private
 
     def self.request(query_options)
-      query_options = transform_query_options(query_options)
+      query_options = transform_query_options(query_options.merge(get_default_params))
       Endeca::Request.perform(get_path, query_options)
     end
   end
