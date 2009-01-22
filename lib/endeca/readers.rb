@@ -78,11 +78,17 @@ module Endeca
       reader(*attrs) { |value| value == "1" ? true : false }
     end
 
-    def dim_reader(*methods, &block)
-      methods.each do |method|
-        block ||= lambda {|x| x}
+    def dim_reader(*attrs, &block)
+      hash = {}
+      block ||= lambda {|x| x}
+
+      hash.update(attrs.pop) if Hash === attrs.last
+
+      attrs.each{|attr| hash[attr] = attr}
+
+      hash.each do |variable, method|
         define_method method do
-          dim = dimensions[method.to_s]
+          dim = dimensions[variable.to_s]
           name = dim && dim.name
           block.call(name)
         end

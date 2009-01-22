@@ -81,6 +81,24 @@ describe Endeca::Readers do
         @a_helper.type.should == 'a type'
       end
     end
+
+    describe "with a string" do
+      it "adds a reader that returns the name of that dimension" do
+        @helper.dim_reader('type')
+        dimensions = {"type" => mock('type', :name => 'a type')}
+        @a_helper.stub!(:dimensions).and_return(dimensions)
+        @a_helper.type.should == 'a type'
+      end
+    end
+
+    describe "with a string that has spaces" do
+      it "adds a reader that returns the name of that dimension" do
+        @helper.dim_reader('type a lot' => :type_a_lot)
+        dimensions = {"type a lot" => mock('type', :name => 'a type')}
+        @a_helper.stub!(:dimensions).and_return(dimensions)
+        @a_helper.type_a_lot.should == 'a type'
+      end
+    end
   end
 
   describe "exception handling" do
