@@ -106,7 +106,7 @@ describe Endeca::Readers do
       helper = Class.new(Endeca::Document)
       helper.integer_reader(:helper_id)
       helper = helper.new('Properties' => {'helper_id' => 'W'})
-      lambda{helper.helper_id}.should raise_error(Endeca::ReaderError)
+      lambda{helper.helper_id}.should raise_error(Endeca::ReaderError, %{invalid value for Integer: "W"})
     end
   end
 end

@@ -36,7 +36,7 @@ module Endeca
           begin
             block.call(attributes[variable.to_s])
           rescue StandardError => e
-            raise Endeca::ReaderError, e
+            raise Endeca::ReaderError, e.message
           end
         end
       end
