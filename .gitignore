@@ -1,5 +1,7 @@
 *.swp
 .swn
 .swp
+.DS_Store
 coverage/
 pkg/
+doc/
