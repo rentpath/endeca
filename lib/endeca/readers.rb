@@ -25,22 +25,19 @@ module Endeca
     #   reader(:title => :upcased_title) { |title| title.upcase }
     def reader(*attrs,&block)
       hash = {}
+      block ||= lambda {|x| x}
+
       hash.update(attrs.pop) if Hash === attrs.last
-      attrs.each do |attr|
-        hash[attr] = attr
-      end
+
+      attrs.each{ |attr| hash[attr] = attr }
+
       hash.each do |variable, method|
-        variable = variable.to_s
-        if block_given?
-          define_method(method) do
-            begin
-              block.call(attributes[variable])
-            rescue StandardError => e
-              raise Endeca::ReaderError, e
-            end
+        define_method(method) do
+          begin
+            block.call(attributes[variable.to_s])
+          rescue StandardError => e
+            raise Endeca::ReaderError, e
           end
-        else
-          define_method(method) { attributes[variable] }
         end
       end
     end
