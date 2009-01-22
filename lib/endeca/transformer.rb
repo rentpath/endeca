@@ -1,8 +1,13 @@
 module Endeca
   module Transformer
-    # Requires existence of mappings accessor
-    # ===Example
+    # Requires existence of mappings accessor (Hash)
+    #
+    # ==== Examples
+    #   # Standard map call that returns an Endeca::Map object
     #   map(:old_name => :new_name)
+    #
+    #   # Allows to to create a map object to perform other functionality such
+    #   # as transformations.
     #   map(:new_name)
     def map(mapping = {})
       mapping = {mapping => mapping} if Symbol === mapping
