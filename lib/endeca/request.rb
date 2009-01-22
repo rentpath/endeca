@@ -43,7 +43,7 @@ module Endeca
       end
 
     rescue => e
-      raise RequestError, e
+      raise RequestError, e.message
     end
 
     def query_string

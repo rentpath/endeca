@@ -41,8 +41,8 @@ describe Endeca::Request do
         FakeWeb.register_uri(@path, :status => ['404', 'Not Found'])
       end
 
-      it "should raise a Net::HTTP error" do
-        lambda {@request.perform}.should raise_error(Net::HTTPServerException, '404 "Not Found"')
+      it "should raise an Endeca::RequestError" do
+        lambda {@request.perform}.should raise_error(Endeca::RequestError, '404 "Not Found"')
       end
 
     end
