@@ -1,8 +1,9 @@
 require 'rubygems'
-$:.unshift(File.dirname(__FILE__))
 require 'net/http'
 require 'json'
 require 'logger'
+
+$:.unshift(File.dirname(__FILE__))
 require 'core_ext'
 require 'class_to_proc'
 require 'endeca/readers'
