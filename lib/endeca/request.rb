@@ -1,5 +1,7 @@
 require 'uri'
 module Endeca
+  class RequestError < ::StandardError; end
+
   class Request
 
     def self.perform(path, query=nil)
@@ -39,6 +41,9 @@ module Endeca
       else
         response.error! # raises exception corresponding to http error Net::XXX
       end
+
+    rescue => e
+      raise RequestError, e
     end
 
     def query_string
