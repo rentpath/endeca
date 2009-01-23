@@ -88,14 +88,14 @@ describe Endeca::Document do
 
           @document.
             stub!(:raw).
-            and_return({'Dimensions' => {"key" => dimension_hash}})
+            and_return({'Dimensions' => {"key" => [dimension_hash]}})
 
           Endeca::Dimension.
             should_receive(:new).
             with(dimension_hash).
             and_return(dimension)
 
-          @document.dimensions["key"].should == dimension
+          @document.dimensions["key"].should == [dimension]
         end
       end
     end

@@ -37,7 +37,7 @@ module Endeca
       return @dimensions if @dimensions
       @dimensions = {}
       (raw['Dimensions'] || {}).each do |name, values|
-        values = [values] if Array === values
+        values = [values] unless Array === values
         @dimensions[name] = values.map(&Dimension)
       end
       @dimensions
@@ -73,7 +73,7 @@ module Endeca
     #   Listing.find(:first, :available => true)
     def self.find(what, query_options={})
       case what
-      when /^[A-Z\d]+$/
+      when Integer, /^[A-Z\d]+$/
         by_id(what, query_options)
       when :first
         first(query_options)
