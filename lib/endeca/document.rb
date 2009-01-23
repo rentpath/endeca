@@ -102,7 +102,7 @@ module Endeca
     private
 
     def self.request(query_options)
-      query_options = transform_query_options(query_options.merge(get_default_params))
+      query_options = transform_query_options(get_default_params.merge(query_options))
       Endeca::Request.perform(get_path, query_options)
     end
   end
