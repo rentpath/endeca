@@ -74,22 +74,5 @@ module Endeca
     def boolean_reader(*attrs)
       reader(*attrs) { |value| value == "1" ? true : false }
     end
-
-    def dim_reader(*attrs, &block)
-      hash = {}
-      block ||= lambda {|x| x}
-
-      hash.update(attrs.pop) if Hash === attrs.last
-
-      attrs.each{|attr| hash[attr] = attr}
-
-      hash.each do |variable, method|
-        define_method method do
-          dim = dimensions[variable.to_s]
-          name = dim && dim.name
-          block.call(name)
-        end
-      end
-    end
   end
 end
