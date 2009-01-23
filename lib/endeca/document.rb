@@ -37,7 +37,8 @@ module Endeca
       return @dimensions if @dimensions
       @dimensions = {}
       (raw['Dimensions'] || {}).each do |name, value|
-        @dimensions[name] = Dimension.new(value)
+        values = [values] if Array === values
+        @dimensions[name] = values.map(&Dimension)
       end
       @dimensions
     end
