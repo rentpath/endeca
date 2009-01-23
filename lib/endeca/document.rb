@@ -72,7 +72,7 @@ module Endeca
     #   Listing.find(:first, :available => true)
     def self.find(what, query_options={})
       case what
-      when Integer, /^\d+$/
+      when /^[A-Z\d]+$/
         by_id(what, query_options)
       when :first
         first(query_options)
