@@ -31,6 +31,8 @@ module Endeca
       self
     end
 
+    def into?; @into end
+
     # When mapping multiple key/value pairs to a single parameter value (via
     # +into+), use this character to join a key with a value.
     def with(character)
@@ -45,11 +47,31 @@ module Endeca
       self
     end
 
+    def join?; @join end
+
     # Code block to execute on the original data
     def transform(&block)
       add_transformation block
       self
     end
+
+    # When mapping multiple values, enclose the values in the string provided
+    # to +enclose+.
+    def enclose(str)
+      @enclose = str
+      self
+    end
+
+    def enclose?; @enclose end
+
+    # When mapping multiple key/value pairs, replace existing keys with the new
+    # keys rather than joining.
+    def replace!
+      @replace = true
+      self
+    end
+
+    def replace?; @replace end
 
     # Perform the mapping as defined for the current_query
     def perform(current_query)
@@ -75,12 +97,18 @@ module Endeca
       @transformations ||= []
     end
 
+    def transformations?
+      !transformations.empty?
+    end
+
     def add_transformation(transformation = nil, &block)
       transformations.push transformation if transformation
       transformations.push block if block_given?
     end
 
     def perform_transformation
+      return unless transformations?
+
       current_value = @current_query[@old_key]
       transformations.each do |transformation|
         current_value = transformation.call(current_value)
@@ -93,18 +121,23 @@ module Endeca
     end
 
     def perform_into
-      return unless @into
+      return unless into?
+
       old_key, old_value = Array(@new_query).flatten
       new_key, new_value = Array(@into).flatten
       if new_value
         @new_query = {new_key => old_key, new_value => old_value}
       else
-        @new_query = {new_key => [old_key, old_value].compact.join(@with)}
+        new_value = [old_key, old_value].compact.join(@with)
+        new_value = "#{@enclose}(#{new_value})" if enclose?
+        @new_query = {new_key => new_value}
       end
     end
 
     def perform_join
-      return unless @join
+      return unless join?
+      return if replace?
+
       @new_query.each do |key, value|
         @new_query[key] = [@current_query[key], value].compact.join(@join)
       end

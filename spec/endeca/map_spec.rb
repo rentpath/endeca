@@ -4,6 +4,7 @@ describe Endeca::Map do
   before do
     @query = {:foo => "bazz", :bizz => "somevalue"}
     @map = Endeca::Map.new :foo, :bizz
+
   end
 
   describe ".perform" do
@@ -38,6 +39,26 @@ describe Endeca::Map do
 
     it "should assign the default character used to join key/value pairs" do
       @map.into(:foo => :bar).instance_variable_get(:@join).should == '|'
+    end
+  end
+
+  describe "#perform_into" do
+    describe "with an enclosing string" do
+      map = Endeca::Map.new(:foo, :bar)
+      map.into(:bizz).enclose(:AND)
+      map.perform(:foo => :quux).should == {:bizz => 'AND(bar:quux)'}
+    end
+
+    describe "with replace" do
+      map = Endeca::Map.new(:foo, :bar)
+      map.into(:bizz).replace!
+      map.perform(:foo => :quux, :bizz => :foobar).should == {:bizz => 'bar:quux'}
+    end
+
+    describe "with enclose and replace" do
+      map = Endeca::Map.new(:foo, :bar)
+      map.into(:bizz).enclose(:AND).replace!
+      map.perform(:foo => :quux, :bizz => :foobar).should == {:bizz => 'AND(bar:quux)'}
     end
   end
 
