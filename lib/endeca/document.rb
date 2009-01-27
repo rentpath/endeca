@@ -75,6 +75,8 @@ module Endeca
       case what
       when Integer, /^[A-Z\d]+$/
         by_id(what, query_options)
+      when String
+        all(what)
       when :first
         first(query_options)
       when :all
@@ -103,7 +105,11 @@ module Endeca
     private
 
     def self.request(query_options)
-      query_options = transform_query_options(get_default_params.merge(query_options))
+      if query_options.respond_to?(:merge)
+        new_query_options = get_default_params.merge(query_options)
+        query_options = transform_query_options(new_query_options)
+      end
+
       Endeca::Request.perform(get_path, query_options)
     end
   end

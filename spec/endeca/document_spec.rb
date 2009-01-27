@@ -130,6 +130,14 @@ describe Endeca::Document do
       end
     end
 
+    describe 'with an query string' do
+      it "should call find with the argument and the query options" do
+        query_string = 'N=0&Ntk=propertycity&Ntt=Atlanta'
+        Endeca::Document.should_receive(:all).with(query_string)
+        Endeca::Document.find(query_string)
+      end
+    end
+
     describe 'with only query options' do
       it 'should call .all with the query options' do
         Endeca::Document.should_receive(:all).with(@query_options)
