@@ -2,15 +2,15 @@
 
 Gem::Specification.new do |s|
   s.name = %q{endeca}
-  s.version = "0.9.3"
+  s.version = "0.9.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rein Henrichs", "Andy Stone"]
-  s.date = %q{2009-01-26}
+  s.date = %q{2009-01-27}
   s.description = %q{An Endeca client library for Ruby.}
   s.email = %q{}
-  s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.rdoc", "lib/.endeca.rb.swp"]
-  s.files = [".gitignore", "History.txt", "Manifest.txt", "README.rdoc", "Rakefile", "endeca.gemspec", "example/benchmark.rb", "example/listing.rb", "lib/.endeca.rb.swp", "lib/class_to_proc.rb", "lib/core_ext.rb", "lib/endeca.rb", "lib/endeca/dimension.rb", "lib/endeca/document.rb", "lib/endeca/document_collection.rb", "lib/endeca/map.rb", "lib/endeca/readers.rb", "lib/endeca/refinement.rb", "lib/endeca/request.rb", "lib/endeca/transformer.rb", "spec/core_ext_spec.rb", "spec/endeca/dimension_spec.rb", "spec/endeca/document_collection_spec.rb", "spec/endeca/document_spec.rb", "spec/endeca/map_spec.rb", "spec/endeca/readers_spec.rb", "spec/endeca/refinement_spec.rb", "spec/endeca/request_spec.rb", "spec/endeca/transformer_spec.rb", "spec/endeca_spec.rb", "spec/rcov.opts", "spec/spec.opts", "spec/spec_helper.rb"]
+  s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.rdoc"]
+  s.files = ["History.txt", "Manifest.txt", "README.rdoc", "Rakefile", "example/benchmark.rb", "example/listing.rb", "lib/class_to_proc.rb", "lib/core_ext.rb", "lib/endeca.rb", "lib/endeca/dimension.rb", "lib/endeca/document.rb", "lib/endeca/document_collection.rb", "lib/endeca/map.rb", "lib/endeca/readers.rb", "lib/endeca/refinement.rb", "lib/endeca/request.rb", "lib/endeca/transformer.rb", "spec/core_ext_spec.rb", "spec/endeca/dimension_spec.rb", "spec/endeca/document_collection_spec.rb", "spec/endeca/document_spec.rb", "spec/endeca/map_spec.rb", "spec/endeca/readers_spec.rb", "spec/endeca/refinement_spec.rb", "spec/endeca/request_spec.rb", "spec/endeca/transformer_spec.rb", "spec/endeca_spec.rb", "spec/rcov.opts", "spec/spec.opts", "spec/spec_helper.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/primedia/endeca-ruby}
   s.rdoc_options = ["--main", "README.rdoc"]
