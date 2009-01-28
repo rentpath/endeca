@@ -63,6 +63,12 @@ describe Endeca::Readers do
       a_helper = @helper.new('Properties' => {'helper_id' => "1.9234"})
       a_helper.helper_id.should == Float("1.9234")
     end
+
+    it "adds a reader that casts the value to an float" do
+      @helper.float_reader(:helper_id)
+      a_helper = @helper.new('Properties' => {'unhelpful_id' => "1.9234"})
+      a_helper.helper_id.should == nil
+    end
   end
 
   describe ".boolean_reader" do
