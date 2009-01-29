@@ -4,7 +4,11 @@ describe Endeca::DocumentCollection do
   before do
     @metainfo = mock('MetaInfo', :[] => nil)
     @document = mock('Document', :[] => nil)
-    @refinement = mock('Refinement', :[] => [])
+    @refinement = { "Dimensions" => [ {
+                                "ExpansionLink" =>  "N=&Ne=7",
+                                "DimensionName" => "city",
+                                "DimensionID"  => "7" } ] }
+
     @raw = {
       'Records'     => [@document],
       'MetaInfo'    => @metainfo,
@@ -89,6 +93,10 @@ describe Endeca::DocumentCollection do
   describe '#refinements' do
     it 'should return a collection of Refinement objects' do
       @document_collection.refinements.should == [Endeca::Refinement.new(@refinement)]
+    end
+
+    it "should return refinement uri by name" do
+      @document_collection.refinement_uri_by_name('city').should == "N=&Ne=7"
     end
   end
 
