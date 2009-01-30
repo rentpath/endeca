@@ -2,8 +2,25 @@ require File.join(File.dirname(__FILE__), %w[.. spec_helper])
 
 describe Endeca::Refinement do
   before do
-    @refinement = Endeca::Refinement.new
+    @dimension_value = {
+      "DimValueID" => "4294965335",
+      "SelectionLink" => "N=4294965335&Ne=3",
+      "DimValueName" => "Winter Park",
+      "NumberofRecords" => "44"
+    }
+
+    dimensions = { "Dimensions" => [ 
+      { 
+        "DimensionID" => "3",
+        "DimensionName" => "state", 
+        "ContractionLink" => "N=",
+        "DimensionValues" => [@dimension_value] 
+      }
+     ]
+    }
+    @refinement = Endeca::Refinement.new( dimensions )
   end
+
   describe '#==' do
     it "should compare refinements by id" do
       doc_1, doc_2 = Endeca::Refinement.new, Endeca::Refinement.new
@@ -34,5 +51,14 @@ describe Endeca::Refinement do
       @refinement.stub!(:name).and_return('A Name')
       @refinement.inspect.should include('name="A Name"')
     end
+  end
+
+  it "should return to_params on the contraction link " do
+    @refinement.to_params.should == "N="
+  end
+
+  it "should return an array of dimensions for dimension_values" do
+    my_dimension = Endeca::Dimension.new(@dimension_value)
+    @refinement.dimension_values.should == [my_dimension]
   end
 end
