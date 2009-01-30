@@ -67,10 +67,9 @@ module Endeca
       @refinements ||= (@raw['Refinements'] || []).map(&Refinement)
     end
 
-    # Return the uri for the refinement by name
-    def refinement_uri_by_name(name)
-      refinement = refinements.find{|ref| ref.name.downcase == name.downcase}
-      refinement.to_params if refinement
+    # Return the refinement by name
+    def refinement_by_name(name)
+      refinements.find{|ref| ref.name.downcase == name.downcase}
     end
 
     # List of array methods (that are not in +Object+) that need to be
