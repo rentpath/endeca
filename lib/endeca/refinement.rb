@@ -3,6 +3,16 @@ module Endeca
     extend ClassToProc
     extend Readers
 
+    reader 'DimensionName' => :name,
+      'ExpansionLink' => :expansion_link,
+      'ContractionLink' => :contraction_link
+
+    integer_reader 'DimensionID' => :id
+
+    reader('DimensionValues' => :dimension_values) do |values|
+      values.map(&Dimension) if values
+    end
+
     attr_reader :raw
     def initialize(raw={})
       @raw = raw
@@ -20,10 +30,9 @@ module Endeca
       (@raw['Dimensions'] || []).first || {}
     end
 
-    reader \
-      'DimensionName' => :name,
-      'ExpansionLink' => :to_params
+    def to_params
+      expansion_link || contraction_link
+    end
 
-    integer_reader 'DimensionID' => :id
   end
 end
