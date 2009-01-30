@@ -95,8 +95,9 @@ describe Endeca::DocumentCollection do
       @document_collection.refinements.should == [Endeca::Refinement.new(@refinement)]
     end
 
-    it "should return refinement uri by name" do
-      @document_collection.refinement_uri_by_name('city').should == "N=&Ne=7"
+    it "should return refinement by name" do
+      @document_collection.refinement_by_name('city').
+        should == Endeca::Refinement.new(@refinement)
     end
   end
 
