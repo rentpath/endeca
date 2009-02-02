@@ -8,11 +8,16 @@ describe Endeca::DocumentCollection do
                                 "ExpansionLink" =>  "N=&Ne=7",
                                 "DimensionName" => "city",
                                 "DimensionID"  => "7" } ] }
+    @breadcrumb = { "Dimensions" => [ {
+                                "DimensionName" => "property type",
+                                "DimensionRemovalLink" =>  "N=",
+                                "Type"  => "Navigation" } ] }
 
     @raw = {
       'Records'     => [@document],
       'MetaInfo'    => @metainfo,
-      'Refinements' => [@refinement]
+      'Refinements' => [@refinement],
+      'Breadcrumbs' => [@breadcrumb]
     }
     @document_collection = Endeca::DocumentCollection.new(@raw)
   end
@@ -98,6 +103,12 @@ describe Endeca::DocumentCollection do
     it "should return refinement by name" do
       @document_collection.refinement_by_name('city').
         should == Endeca::Refinement.new(@refinement)
+    end
+  end
+
+  describe '#breadcrumbs' do
+    it 'should return a collection of Breadcrumb objects' do
+      @document_collection.breadcrumbs.should == [Endeca::Breadcrumb.new(@breadcrumb)]
     end
   end
 

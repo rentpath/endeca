@@ -67,6 +67,11 @@ module Endeca
       @refinements ||= (@raw['Refinements'] || []).map(&Refinement)
     end
 
+    # The collection of Breadcrumb objects for the collection.
+    def breadcrumbs
+      @breadcrumbs ||= (@raw['Breadcrumbs'] || []).map(&Breadcrumb)
+    end
+
     # Return the refinement by name
     def refinement_by_name(name)
       refinements.find{|ref| ref.name.downcase == name.downcase}
