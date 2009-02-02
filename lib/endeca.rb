@@ -2,6 +2,7 @@ require 'rubygems'
 require 'net/http'
 require 'json'
 require 'logger'
+require 'activesupport'
 
 $:.unshift(File.dirname(__FILE__))
 require 'core_ext'

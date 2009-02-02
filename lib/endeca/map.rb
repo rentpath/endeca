@@ -75,7 +75,7 @@ module Endeca
 
     # Perform the mapping as defined for the current_query
     def perform(current_query)
-      @current_query = current_query
+      @current_query = current_query.with_indifferent_access
 
       perform_transformation
       perform_map

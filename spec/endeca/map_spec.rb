@@ -12,6 +12,10 @@ describe Endeca::Map do
       @map.perform(@query).should == {:bizz => "bazz"}
     end
 
+    it "should be indifferent to string or symbol keys" do
+      @map.perform("foo" => "bazz").should == {:bizz => "bazz"}
+    end
+
     it "should transform the value based on the block" do
       map = @map.transform{|val| val.to_s.upcase}
       map.perform(@query).should == {:bizz => "BAZZ"}
