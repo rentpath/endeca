@@ -205,6 +205,23 @@ describe Endeca::Document do
     end
   end
 
+  describe ".all" do
+    describe "with a query string" do
+      it 'should make a request with the query string' do
+        Endeca::Request.should_receive(:perform).with(anything, "query string")
+        Endeca::Document.all("query string")
+      end
+
+      describe "and default parameters" do
+        it "should make a request with the query string and ignore the defaults" do
+          Endeca::Document.default_params :foo => :bar
+          Endeca::Request.should_receive(:perform).with(anything, "query string")
+          Endeca::Document.all("query string")
+        end
+      end
+    end
+  end
+
   describe ".transform_query_options" do
     before do
       @query_options = {
