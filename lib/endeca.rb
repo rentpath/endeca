@@ -20,7 +20,7 @@ require 'endeca/document'
 module Endeca
 
   # :stopdoc:
-  VERSION = '0.9.10'
+  VERSION = '0.9.11'
   # :startdoc:
 
   # Returns the version string for the library.
