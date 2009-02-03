@@ -113,7 +113,7 @@ module Endeca
         new_query_options = get_default_params.merge(query_options)
         query_options = transform_query_options(new_query_options)
       else
-        query_options
+        URI.unescape(query_options)
       end
     end
   end
