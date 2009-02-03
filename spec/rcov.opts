@@ -1,5 +1,5 @@
 --text-summary
 --exclude
-  json,FakeWeb,rcov.rb,rspec,spec
+  json,FakeWeb,rcov.rb,rspec,spec,activesupport,builder,gem
 --sort
   coverage
