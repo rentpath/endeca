@@ -21,7 +21,7 @@ describe Endeca::DocumentCollection do
     }
 
     @aggregate_raw = {
-      'AggrRecords' => {'Records' => [@document]}
+      'AggrRecords' => [{'Records' => [@document]}]
     }
 
     @document_collection = Endeca::DocumentCollection.new(@raw)

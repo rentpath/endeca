@@ -62,7 +62,7 @@ module Endeca
       if @raw['Records']
         @documents ||= @raw['Records'].map(&@document_klass)
       elsif @raw['AggrRecords']
-        @documents ||= @raw['AggrRecords']['Records'].map(&@document_klass)
+        @documents ||= @raw['AggrRecords'].map{|aggregate| aggregate['Records'].first}.map(&@document_klass)
       else
         []
       end
