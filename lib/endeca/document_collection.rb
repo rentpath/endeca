@@ -59,7 +59,17 @@ module Endeca
 
     # The internal collection of Document objects. Array methods are delegated here. 
     def documents
-      @documents ||= (@raw['Records'] || []).map(&@document_klass)
+      if @raw['Records']
+        @documents ||= @raw['Records'].map(&@document_klass)
+      elsif @raw['AggrRecords']
+        @documents ||= @raw['AggrRecords']['Records'].map(&@document_klass)
+      else
+        []
+      end
+    end
+
+    def aggregate?
+      @raw['AggrRecords'] ? true : false
     end
 
     # The collection of Refinement objects for the collection.

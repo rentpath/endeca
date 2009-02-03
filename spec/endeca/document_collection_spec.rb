@@ -19,6 +19,11 @@ describe Endeca::DocumentCollection do
       'Refinements' => [@refinement],
       'Breadcrumbs' => [@breadcrumb]
     }
+
+    @aggregate_raw = {
+      'AggrRecords' => {'Records' => [@document]}
+    }
+
     @document_collection = Endeca::DocumentCollection.new(@raw)
   end
 
@@ -35,27 +40,51 @@ describe Endeca::DocumentCollection do
   end
 
   describe '#documents' do
-    it "should return a collection of documents" do
-      @document_collection.documents.size.should == 1
-      @document_collection.documents.first.should == Endeca::Document.new(@document)
-    end
-
     it "should return the correct document class for subclassees" do
       class ConcreteDocument < Endeca::Document; end
       collection = Endeca::DocumentCollection.new(@raw, ConcreteDocument)
       collection.documents.first.class.should == ConcreteDocument
     end
+
+    describe "with a normal record set" do
+      it "should return a collection of documents" do
+        @document_collection.documents.should == [Endeca::Document.new(@document)]
+      end
+    end
+
+    describe "with an aggregate record set" do
+      before do
+        @document_collection = Endeca::DocumentCollection.new(@aggregate_raw)
+      end
+
+      it "should find the documents" do
+        @document_collection.documents.size.should == 1
+        @document_collection.documents.first.should == Endeca::Document.new(@document)
+      end
+    end
+
+    describe "with no record set" do
+      before { @document_collection = Endeca::DocumentCollection.new({}) }
+      it { @document_collection.documents.should be_empty }
+    end
+  end
+
+  describe "#aggregate?" do
+    describe "with a normal document collection" do
+      it { @document_collection.aggregate?.should be_false }
+    end
+
+    describe "with an aggregate document collection" do
+      before { @document_collection = Endeca::DocumentCollection.new(@aggregate_raw) }
+      it { @document_collection.aggregate?.should be_true }
+    end
   end
 
   describe "#previous_page" do
     describe "when on the first page" do
-      before do
-        @document_collection.stub!(:current_page).and_return(0)
-      end
+      before { @document_collection.stub!(:current_page).and_return(0) }
 
-      it "should be nil" do
-        @document_collection.previous_page.should be_nil
-      end
+      it { @document_collection.previous_page.should be_nil }
     end
 
     describe "when on any other page" do
@@ -75,19 +104,12 @@ describe Endeca::DocumentCollection do
     end
 
     describe "when on the last page" do
-      before do
-        @document_collection.stub!(:current_page).and_return(20)
-      end
-
-      it "should be nil" do
-        @document_collection.next_page.should be_nil
-      end
+      before { @document_collection.stub!(:current_page).and_return(20) }
+      it { @document_collection.next_page.should be_nil }
     end
 
     describe "when on any other page" do
-      before do
-        @document_collection.stub!(:current_page).and_return(4)
-      end
+      before { @document_collection.stub!(:current_page).and_return(4) }
 
       it "should return the next page" do
         @document_collection.next_page.should == 5
@@ -121,16 +143,16 @@ describe Endeca::DocumentCollection do
   end
 
   describe "#is_a?" do
-    it "should be true if the compared class is Array" do
-      @document_collection.is_a?(Array).should be_true
+    describe "Array" do
+      it { @document_collection.is_a?(Array).should be_true }
     end
 
-    it "should be true if the compared class is Endeca::DocumentCollection" do
-      @document_collection.is_a?(Endeca::DocumentCollection).should be_true
+    describe "DocumentCollection" do
+      it { @document_collection.is_a?(Endeca::DocumentCollection).should be_true }
     end
 
-    it "should be false if the compared class is String" do
-      @document_collection.is_a?(String).should be_false
+    describe "String" do
+      it { @document_collection.is_a?(String).should be_false }
     end
   end
 end
