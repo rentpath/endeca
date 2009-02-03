@@ -30,7 +30,4 @@ class Listing < Endeca::Document
 
   def coordinates; [latitude, longitude] end
   def image_url; (graphic_urls || thumbnails).first rescue nil end
-
-  dim_reader :zip, :bathrooms, :bedrooms
-
 end
