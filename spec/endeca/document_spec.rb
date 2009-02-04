@@ -165,6 +165,15 @@ describe Endeca::Document do
       Endeca::Document.first(:id => '1234')
     end
 
+    it "should instantiate a new Endeca::Document from the first record in the response hash with aggregate results" do
+      hash = {'AggrRecords' => [{'Records' => [:document]}]}
+      Endeca::Request.stub!(:perform).and_return(hash)
+      Endeca::Document.
+        should_receive(:new).
+        with(:document)
+      Endeca::Document.first(:id => '1234')
+    end
+
     describe "when no matching record is returned" do
       it "should be nil" do
       Endeca::Request.stub!(:perform).and_return({'Records' => nil})

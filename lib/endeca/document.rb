@@ -88,8 +88,15 @@ module Endeca
 
     # Returns the first Document matching the query options.
     def self.first(query_options={})
-      records = request(query_options)['Records']
-      records && new(records.first)
+      response  = request(query_options)
+      if response['AggrRecords'] 
+        record = response['AggrRecords'].first['Records'].first
+      else
+        record = response['Records'].first
+      end
+      record && new(record)
+    rescue Exception 
+      nil
     end
 
     # Returns all Documents matching the query options.
@@ -116,5 +123,6 @@ module Endeca
         URI.unescape(query_options)
       end
     end
+
   end
 end
