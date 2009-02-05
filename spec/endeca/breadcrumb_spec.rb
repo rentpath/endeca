@@ -1,23 +1,54 @@
 require File.join(File.dirname(__FILE__), %w[.. spec_helper])
 
+module Endeca
+  module Breadcrumbs
+    class Navigation < Endeca::Breadcrumb
+    end
+  end
+end
+
 describe Endeca::Breadcrumb do
   before do
     @dimension_value = {
-      "DimValueID" => "4343565665",
-      "RemovalLink" => "N=",
+      "DimValueID"   => "4343565665",
+      "RemovalLink"  => "N=",
       "DimValueName" => "Apartment"
     }
-
-    dimensions = { "Dimensions" => [ 
-      { 
-        "Type" => "Navigation",
-        "DimensionName" => "property type", 
-        "DimensionRemovalLink" => "N=", 
-        "DimensionValues" => [@dimension_value] 
-      }
-     ]
+    
+    @navigation_hash = { 
+      "Type"                 => "Navigation",
+      "DimensionName"        => "property type", 
+      "DimensionRemovalLink" => "N=", 
+      "DimensionValues"      => [@dimension_value] 
     }
-    @Breadcrumb = Endeca::Breadcrumb.new( dimensions )
+
+    @dimensions = { "Dimensions" => [@navigation_hash] }
+    @breadcrumb = Endeca::Breadcrumb.new( @dimensions )
+  end
+  
+  describe ".create" do
+    before do
+      @navigation = Endeca::Breadcrumb.create(@navigation_hash)
+    end
+    
+    it "should create a breadcrumb of the appropriate type" do
+      Endeca::Breadcrumb.create(@navigation_hash).
+        should be_a_kind_of(Endeca::Breadcrumbs::Navigation)
+    end
+    
+    describe "with an invalid type" do
+      it do
+        creating_invalid_breadcrumb = lambda{Endeca::Breadcrumb.create({'Type' => 'Invalid'})}
+        creating_invalid_breadcrumb.should raise_error(Endeca::Breadcrumbs::TypeError)
+      end
+    end
+  end
+  
+  describe ".to_proc" do
+    it "should call create" do
+      Endeca::Breadcrumb.should_receive(:create).with(:obj)
+      [:obj].map(&Endeca::Breadcrumb)
+    end
   end
 
   describe '#==' do
@@ -34,25 +65,26 @@ describe Endeca::Breadcrumb do
 
   describe '#inspect' do
     it "includes the class name" do
-      @Breadcrumb.inspect.should include(Endeca::Breadcrumb.name)
+      @breadcrumb.inspect.should include(Endeca::Breadcrumb.name)
     end
 
     it "includes the hex string of the object id" do
-      @Breadcrumb.inspect.should include("0x#{@Breadcrumb.object_id.to_s(16)}")
+      @breadcrumb.inspect.should include("0x#{@breadcrumb.object_id.to_s(16)}")
     end
 
     it "includes the inspected name" do
-      @Breadcrumb.stub!(:name).and_return('A Name')
-      @Breadcrumb.inspect.should include('name="A Name"')
+      @breadcrumb.stub!(:name).and_return('A Name')
+      @breadcrumb.inspect.should include('name="A Name"')
     end
   end
-
-  it "should return to_params on the dimension removal link " do
-    @Breadcrumb.to_params.should == "N="
+  
+  describe "#type" do
+    it "returns the Type value" do
+      Endeca::Breadcrumb.new('Type' => 'AType').type.should == 'AType'
+    end
   end
-
-  it "should return an array of dimensions for dimension_values" do
-    my_dimension = Endeca::Dimension.new(@dimension_value)
-    @Breadcrumb.dimension_values.should == [my_dimension]
+  
+  describe "#name" do
+    it {Endeca::Breadcrumb.new.name.should == ''}
   end
 end

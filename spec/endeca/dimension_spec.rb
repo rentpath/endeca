@@ -8,6 +8,32 @@ describe Endeca::Dimension do
       dimension.raw.should == :raw
     end
   end
+  
+  describe "#to_params" do
+    before do
+      @dimension = Endeca::Dimension.new
+      @selection = mock('selection link')
+      @removal = mock('removal link')
+    end
+
+    describe "with a selection link" do
+      it "should return the selection link" do
+        @dimension.stub!(:selection_link => @selection_link)
+        @dimension.stub!(:removal_link => nil)
+        
+        @dimension.to_params.should == @selection_link
+      end
+    end
+    
+    describe "with a removal link" do
+      it "should return the selection link" do
+        @dimension.stub!(:selection_link => nil)
+        @dimension.stub!(:removal_link => @removal_link)
+        
+        @dimension.to_params.should == @removal_link
+      end
+    end
+  end
 
   describe "#inspect" do
     before do

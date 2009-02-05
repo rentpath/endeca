@@ -1,21 +1,34 @@
 module Endeca
+  
   class Breadcrumb
-    extend ClassToProc
     extend Readers
 
-    reader \
-      'DimensionName' => :name,
-      'Type' => :type,
-      'DimensionRemovalLink' => :to_params
+    def self.create(raw)
+      name = raw['Type']
+      breadcrumb_class = self
 
-    reader('DimensionValues' => :dimension_values) do |values|
-      values.map(&Dimension) if values
+      if name    
+        unless Breadcrumbs.include?(name)
+          raise Breadcrumbs::TypeError, "Unknown breadcrumb type: #{name.inspect}" 
+        end
+        breadcrumb_class = Breadcrumbs[name]
+      end
+
+      breadcrumb_class.new(raw)
+    end
+    
+    def self.to_proc
+      proc(&method(:create))
     end
 
     attr_reader :raw
     def initialize(raw={})
       @raw = raw
     end
+    alias_method :attributes, :raw
+    
+    reader 'Type' => :type    
+    def name; '' end
 
     def ==(other)
       name == other.name
@@ -23,10 +36,6 @@ module Endeca
 
     def inspect
       "#<#{self.class}=0x#{self.object_id.to_s(16)} name=#{name.inspect}>"
-    end
-
-    def attributes
-      (@raw['Dimensions'] || []).first || {}
     end
 
   end

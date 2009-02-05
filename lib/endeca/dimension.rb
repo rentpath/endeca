@@ -6,7 +6,8 @@ module Endeca
 
     reader \
       "DimValueName"  => :name,
-      "SelectionLink" => :to_params
+      "SelectionLink" => :selection_link,
+      "RemovalLink"   => :removal_link
 
     integer_reader \
       "DimValueID"      => :id,
@@ -17,6 +18,10 @@ module Endeca
       @raw=raw
     end
     alias_method :attributes, :raw
+    
+    def to_params
+      selection_link || removal_link
+    end
 
     def inspect
       "#<#{self.class}=0x#{self.object_id.to_s(16)} id=#{id} name=#{name.inspect}>"
