@@ -42,7 +42,7 @@ PROJ.authors = ['Rein Henrichs', 'Andy Stone']
 PROJ.email = ''
 PROJ.url = 'http://github.com/primedia/endeca-ruby'
 PROJ.version = Endeca::VERSION
-PROJ.rubyforge.name = 'endeca-ruby'
+PROJ.rubyforge.name = 'endeca'
 PROJ.readme_file = "README.rdoc"
 
 # EOF
