@@ -38,4 +38,9 @@ module Endeca
 
   self.debug  = false
   self.logger = Logger.new(STDOUT)
+  
+  # Endeca URIs require colons to be escaped
+  def self.escape(str)
+    URI.escape(str, /[^-_.!~*'()a-zA-Z\d;\/?@&=+$,\[\]]/n)
+  end
 end
