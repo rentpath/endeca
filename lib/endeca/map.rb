@@ -1,6 +1,6 @@
 module Endeca
   class Map
-    def initialize(old_key=nil, new_key=nil)
+    def initialize(old_key, new_key=nil)
       @old_key = old_key.to_sym
       @new_key = new_key || @old_key
       boolean
