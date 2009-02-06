@@ -1,8 +1,8 @@
 module Endeca
   class Map
     def initialize(old_key=nil, new_key=nil)
-      @old_key = old_key
-      @new_key = new_key
+      @old_key = old_key.to_sym
+      @new_key = new_key || @old_key
       boolean
     end
 
@@ -75,7 +75,7 @@ module Endeca
 
     # Perform the mapping as defined for the current_query
     def perform(current_query)
-      @current_query = current_query.with_indifferent_access
+      @current_query = current_query.symbolize_keys
 
       perform_transformation
       perform_map

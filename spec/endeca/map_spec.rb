@@ -48,21 +48,27 @@ describe Endeca::Map do
 
   describe "#perform_into" do
     describe "with an enclosing string" do
-      map = Endeca::Map.new(:foo, :bar)
-      map.into(:bizz).enclose(:AND)
-      map.perform(:foo => :quux).should == {:bizz => 'AND(bar:quux)'}
+      it "wraps the parameter" do
+        map = Endeca::Map.new(:foo, :bar)
+        map.into(:bizz).enclose(:AND)
+        map.perform(:foo => :quux).should == {:bizz => 'AND(bar:quux)'}
+      end
     end
 
     describe "with replace" do
-      map = Endeca::Map.new(:foo, :bar)
-      map.into(:bizz).replace!
-      map.perform(:foo => :quux, :bizz => :foobar).should == {:bizz => 'bar:quux'}
+      it "replaces the existing parameter" do
+        map = Endeca::Map.new(:foo, :bar)
+        map.into(:bizz).replace!
+        map.perform(:foo => :quux, :bizz => :foobar).should == {:bizz => 'bar:quux'}
+      end
     end
 
     describe "with enclose and replace" do
-      map = Endeca::Map.new(:foo, :bar)
-      map.into(:bizz).enclose(:AND).replace!
-      map.perform(:foo => :quux, :bizz => :foobar).should == {:bizz => 'AND(bar:quux)'}
+      it "wraps the parameter and replaces the existing parameter" do
+        map = Endeca::Map.new(:foo, :bar)
+        map.into(:bizz).enclose(:AND).replace!
+        map.perform(:foo => :quux, :bizz => :foobar).should == {:bizz => 'AND(bar:quux)'}
+      end
     end
   end
 
@@ -96,11 +102,11 @@ describe Endeca::Map do
 
   describe "#transform" do
     it "should execute the transformation block on the query"
-    map = Endeca::Map.new(:field_list)
-    map.into(:F).transform do |fields_array|
-      fields_array.collect{|field| "#{field.to_s}:1"}.join('|')
+      map = Endeca::Map.new(:field_list)
+      map.into(:F).transform do |fields_array|
+        fields_array.collect{|field| "#{field.to_s}:1"}.join('|')
+      map.perform(:field_list => [:first_name, :last_name, :email]).
+        should == {:F => "first_name:1|last_name:1|email:1"}
     end
-    map.perform(:field_list => [:first_name, :last_name, :email]).
-      should == {:F => "first_name:1|last_name:1|email:1"}
   end
 end

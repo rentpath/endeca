@@ -241,6 +241,14 @@ describe Endeca::Document do
     after do
       Endeca::Document.mappings = {}
     end
+    
+    describe "when the key to be mapped is a string" do
+      it "maps correctly" do
+        Endeca::Document.map(:apartments => :showapartments)
+        Endeca::Document.transform_query_options("apartments" => true).
+          should == {:showapartments => 1}
+      end
+    end
 
     describe "when there is no mapping for the given key" do
       it "returns the query options without modification" do
