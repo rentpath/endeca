@@ -1,10 +1,10 @@
 Gem::Specification.new do |s|
   s.name = %q{endeca}
-  s.version = "0.9.16"
+  s.version = "0.9.17"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rein Henrichs", "Andy Stone"]
-  s.date = %q{2009-02-05}
+  s.date = %q{2009-02-06}
   s.description = %q{An Endeca client library for Ruby.}
   s.email = %q{}
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.rdoc"]
@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/primedia/endeca-ruby}
   s.rdoc_options = ["--main", "README.rdoc"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{endeca-ruby}
+  s.rubyforge_project = %q{endeca}
   s.rubygems_version = %q{1.2.0}
   s.summary = %q{An Endeca client library for Ruby}
 
