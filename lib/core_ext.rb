@@ -68,6 +68,6 @@ end
 
 class String
   def to_params
-    URI.escape(self)
+    URI.escape(self, /[^-_.!~*'()a-zA-Z\d;\/?@&=+$,\[\]]/n) # Escape colons
   end
 end

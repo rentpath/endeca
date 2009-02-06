@@ -46,6 +46,10 @@ describe String do
     it "should URI escape the contents" do
       '|'.to_params.should == '%7C'
     end
+    
+    it "should URI escape a colon" do
+      ':'.to_params.should == "%3A"
+    end
   end
 end
 
