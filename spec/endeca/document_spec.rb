@@ -249,6 +249,17 @@ describe Endeca::Document do
           should == {:showapartments => 1}
       end
     end
+    
+    describe "with multiple keys that are joined" do
+      it "should include all the keys" do
+        require 'pp'
+        Endeca::Document.map(:apartments => :showapartments).into('Ntt' => 'Ntk')
+        Endeca::Document.map(:colleges => :showcolleges).into('Ntt' => 'Ntk')
+        ntt = Endeca::Document.transform_query_options('apartments' => '1', 'colleges' => '2')[:Ntt]
+        ntt.should include('showapartments')
+        ntt.should include('showcolleges')
+      end
+    end
 
     describe "when there is no mapping for the given key" do
       it "returns the query options without modification" do

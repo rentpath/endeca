@@ -1,7 +1,7 @@
 module Endeca
   class Map
     def initialize(old_key, new_key=nil)
-      @old_key = old_key.to_sym
+      @old_key = old_key
       @new_key = new_key || @old_key
       boolean
     end
@@ -26,6 +26,7 @@ module Endeca
     #     ?ntk=propercity&ntt=>Atlanta
     def into(hash)
       @into = hash
+      @into = @into.symbolize_keys if @into.respond_to?(:symbolize_keys)
       @with ||= ':'
       @join ||= '|'
       self
@@ -76,6 +77,7 @@ module Endeca
     # Perform the mapping as defined for the current_query
     def perform(current_query)
       @current_query = current_query.symbolize_keys
+      @current_value = @current_query[@old_key]
 
       perform_transformation
       perform_map
@@ -108,8 +110,7 @@ module Endeca
 
     def perform_transformation
       return unless transformations?
-
-      current_value = @current_query[@old_key]
+      current_value = @current_value
       transformations.each do |transformation|
         current_value = transformation.call(current_value)
       end
@@ -117,12 +118,12 @@ module Endeca
     end
 
     def perform_map
-      @new_query = {@new_key => @current_value}
+      @new_query = {@new_key => @current_value}.symbolize_keys
     end
 
     def perform_into
       return unless into?
-
+      
       old_key, old_value = Array(@new_query).flatten
       new_key, new_value = Array(@into).flatten
       if new_value
