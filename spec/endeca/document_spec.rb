@@ -253,11 +253,14 @@ describe Endeca::Document do
     describe "with multiple keys that are joined" do
       it "should include all the keys" do
         require 'pp'
-        Endeca::Document.map(:apartments => :showapartments).into('Ntt' => 'Ntk')
-        Endeca::Document.map(:colleges => :showcolleges).into('Ntt' => 'Ntk')
+        Endeca::Document.map(:apartments => :showapartments).into('Ntk' => 'Ntt')
+        Endeca::Document.map(:colleges => :showcolleges).into('Ntk' => 'Ntt')
+        ntk = Endeca::Document.transform_query_options('apartments' => '1', 'colleges' => '2')[:Ntk]
+        ntk.should include('showapartments')
+        ntk.should include('showcolleges')
         ntt = Endeca::Document.transform_query_options('apartments' => '1', 'colleges' => '2')[:Ntt]
-        ntt.should include('showapartments')
-        ntt.should include('showcolleges')
+        ntt.should include('1')
+        ntt.should include('2')
       end
     end
 

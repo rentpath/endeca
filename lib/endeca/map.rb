@@ -20,15 +20,20 @@ module Endeca
     # join characters (can be overridden by specifying +with+ and/or +join+).
     #
     # Example:
-    #   map(:city => :propertycity).in(:ntk => ntt)
+    #   map(:city => :propertycity).into(:ntk => :ntt)
     #
     #   Document.all(:city => 'Atlanta')   =>
     #     ?ntk=propercity&ntt=>Atlanta
     def into(hash)
+      hash = hash.intern if hash.respond_to?(:intern)
+      if hash.is_a?(Hash)
+        raise ArgumentError, "Only one key/value pair allowed" if hash.size > 1        
+        hash = hash.to_a.flatten
+        hash = {hash.first.to_sym => hash.last.to_sym}
+      end
       @into = hash
-      @into = @into.symbolize_keys if @into.respond_to?(:symbolize_keys)
-      @with ||= ':'
-      @join ||= '|'
+      with ':'
+      join '|'
       self
     end
 
