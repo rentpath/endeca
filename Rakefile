@@ -44,5 +44,7 @@ PROJ.url = 'http://github.com/primedia/endeca-ruby'
 PROJ.version = Endeca::VERSION
 PROJ.rubyforge.name = 'endeca'
 PROJ.readme_file = "README.rdoc"
+PROJ.exclude << '.swp'
+PROJ.exclude << '.gitignore'
 
 # EOF
