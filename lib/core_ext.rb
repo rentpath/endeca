@@ -16,7 +16,7 @@ class Class
 
       def get_#{accessor}
         return @#{accessor} if instance_variable_defined?(:@#{accessor})
-        superclass.send(:#{accessor})
+        superclass.send(:get_#{accessor})
       end
     RUBY
 
