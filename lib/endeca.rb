@@ -7,6 +7,8 @@ require 'activesupport'
 $:.unshift(File.dirname(__FILE__))
 require 'core_ext'
 require 'class_to_proc'
+require 'endeca/logging'
+require 'endeca/benchmarking'
 require 'endeca/readers'
 require 'endeca/map'
 require 'endeca/transformer'
@@ -19,6 +21,8 @@ require 'endeca/document_collection'
 require 'endeca/document'
 
 module Endeca
+  extend Benchmarking
+  extend Logging
 
   # :stopdoc:
   VERSION = '0.9.21'
@@ -32,12 +36,14 @@ module Endeca
 
   # Set Endeca.debug = true to turn on query logging
   class << self
-    attr_accessor :debug
     attr_accessor :logger
+    attr_accessor :debug
+    attr_accessor :benchmark
   end
 
-  self.debug  = false
   self.logger = Logger.new(STDOUT)
+  self.debug  = false
+  self.benchmark  = false
   
   # Endeca URIs require colons to be escaped
   def self.escape(str)
