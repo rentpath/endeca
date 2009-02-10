@@ -303,14 +303,6 @@ describe Endeca::Document do
 
             @current_query_options = {:name => 'bar', :new_name => 'foo'}
           end
-
-          it "should transform the new value with the current value" do
-            pending("Not sure of the use case.") do
-              expected_name = "foo|bar"
-              Endeca::Document.transform_query_options(@current_query_options).
-                should == {:new_name => expected_name}
-            end
-          end
         end
       end
     end

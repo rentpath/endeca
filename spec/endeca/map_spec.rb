@@ -101,10 +101,10 @@ describe Endeca::Map do
   end
 
   describe "#transform" do
-    it "should execute the transformation block on the query"
-      map = Endeca::Map.new(:field_list)
-      map.into(:F).transform do |fields_array|
+    it "should execute the transformation block on the query" do
+      map = Endeca::Map.new(:field_list, :F).transform do |fields_array|
         fields_array.collect{|field| "#{field.to_s}:1"}.join('|')
+      end
       map.perform(:field_list => [:first_name, :last_name, :email]).
         should == {:F => "first_name:1|last_name:1|email:1"}
     end
