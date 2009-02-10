@@ -25,7 +25,7 @@ module Endeca
   extend Logging
 
   # :stopdoc:
-  VERSION = '0.9.22'
+  VERSION = '0.9.23'
   # :startdoc:
 
   # Returns the version string for the library.
