@@ -53,8 +53,8 @@ describe Endeca::Refinement do
     end
   end
 
-  it "should return to_params on the contraction link " do
-    @refinement.to_params.should == "N="
+  it "should return to_endeca_params on the contraction link " do
+    @refinement.to_endeca_params.should == "N="
   end
 
   it "should return an array of dimensions for dimension_values" do

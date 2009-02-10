@@ -54,7 +54,7 @@ module Endeca
     end
 
     def query_string
-      query_string_parts = [@uri.query, @query.to_params]
+      query_string_parts = [@uri.query, @query.to_endeca_params]
       query_string_parts.reject!{ |s| s.nil? || s.empty? }
 
       query_string_parts.empty? ? nil : query_string_parts.join('&')

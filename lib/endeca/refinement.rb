@@ -30,7 +30,7 @@ module Endeca
       (@raw['Dimensions'] || []).first || {}
     end
 
-    def to_params
+    def to_endeca_params
       expansion_link || contraction_link
     end
 

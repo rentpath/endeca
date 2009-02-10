@@ -9,7 +9,7 @@ describe Endeca::Dimension do
     end
   end
   
-  describe "#to_params" do
+  describe "#to_endeca_params" do
     before do
       @dimension = Endeca::Dimension.new
       @selection = mock('selection link')
@@ -21,7 +21,7 @@ describe Endeca::Dimension do
         @dimension.stub!(:selection_link => @selection_link)
         @dimension.stub!(:removal_link => nil)
         
-        @dimension.to_params.should == @selection_link
+        @dimension.to_endeca_params.should == @selection_link
       end
     end
     
@@ -30,7 +30,7 @@ describe Endeca::Dimension do
         @dimension.stub!(:selection_link => nil)
         @dimension.stub!(:removal_link => @removal_link)
         
-        @dimension.to_params.should == @removal_link
+        @dimension.to_endeca_params.should == @removal_link
       end
     end
   end

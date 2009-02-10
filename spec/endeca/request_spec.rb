@@ -52,14 +52,14 @@ describe Endeca::Request do
     describe "with a hash of query options" do
       it "should append the query options onto the url" do
         query = {:foo => :bar}
-        Endeca::Request.new(@path, query).uri.query.should == query.to_params
+        Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
       end
     end
 
     describe "with a string of query options" do
       it "should append the query options string onto the url" do
         query = 'N=56'
-        Endeca::Request.new(@path, query).uri.query.should == query.to_params
+        Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
       end
     end
 end

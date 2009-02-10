@@ -1,6 +1,6 @@
 class Array
-  def to_params
-    join('&').to_params
+  def to_endeca_params
+    join('&').to_endeca_params
   end
 end
 
@@ -67,7 +67,7 @@ class Class
 end
 
 class Hash
-  def to_params
+  def to_endeca_params
     map { |k, v|
       if v.instance_of?(Hash)
         v.map { |sk, sv|
@@ -76,26 +76,26 @@ class Hash
       else
         "#{k}=#{v}"
       end
-    }.join('&').to_params
+    }.join('&').to_endeca_params
   end
-  
+
   def symbolize_keys
     inject({}) do |options, (key, value)|
       options[(key.to_sym rescue key) || key] = value
       options
     end
   end
-  
+
 end
 
 class NilClass
-  def to_params
+  def to_endeca_params
     ''
   end
 end
 
 class String
-  def to_params
+  def to_endeca_params
     Endeca.escape(self)
   end
 end

@@ -19,7 +19,7 @@ module Endeca
     end
     alias_method :attributes, :raw
     
-    def to_params
+    def to_endeca_params
       selection_link || removal_link
     end
 
