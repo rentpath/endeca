@@ -29,12 +29,12 @@ module Endeca
   # :startdoc:
 
   # Returns the version string for the library.
-  #
   def self.version
     VERSION
   end
 
   # Set Endeca.debug = true to turn on query logging
+  # Set Endeca.benchmark = true to turn on query benchmarking
   class << self
     attr_accessor :logger
     attr_accessor :debug
@@ -44,7 +44,7 @@ module Endeca
   self.logger = Logger.new(STDOUT)
   self.debug  = false
   self.benchmark  = false
-  
+
   # Endeca URIs require colons to be escaped
   def self.escape(str)
     URI.escape(str, /[^-_.!~*'()a-zA-Z\d;\/?@&=+$,\[\]]/n)

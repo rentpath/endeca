@@ -4,7 +4,7 @@ module Endeca
   module Benchmarking
     # Log and benchmark the workings of a single block. Will only be called if
     # Endeca.debug and Endeca.benchmark are true.
-    def benchmark(title)
+    def bm(title)
       if Endeca.debug && Endeca.logger && Endeca.benchmark
         result = nil
         ms = ::Benchmark.ms { result = yield }
@@ -14,6 +14,5 @@ module Endeca
         yield
       end
     end
-    alias_method :bm, :benchmark
   end
 end

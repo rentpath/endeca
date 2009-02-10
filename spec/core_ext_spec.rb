@@ -12,6 +12,26 @@ describe Array do
   end
 end
 
+describe Benchmark do
+  describe ".realtime" do
+    it "should check the time twice" do
+      Time.should_receive(:now).exactly(2).times
+      Benchmark.realtime(){}
+    end
+
+    it "should return the time difference as a float" do
+      Benchmark.realtime(){}.should be_a_kind_of(Float)
+    end
+  end
+  
+  describe ".ms" do
+    it "should be 1000 times the realtime value" do
+      Benchmark.stub!(:realtime).and_return(1)
+      Benchmark.ms.should == 1000
+    end
+  end
+end
+
 describe Hash do
   describe "#to_endeca_params" do
     it "should join a key-value pair with equals" do
