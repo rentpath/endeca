@@ -1,4 +1,3 @@
-require 'endeca/document'
 module Endeca
   # Endeca DocumentCollections wrap a collection of Endeca Documents to provide
   # access to metadata returned by the Endeca query. They behave like a simple

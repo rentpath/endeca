@@ -5,6 +5,7 @@ module Endeca
   class Request
 
     def self.perform(path, query=nil)
+      raise RequestError, "Must provide a path" unless path
       new(path, query).perform
     end
 
@@ -28,14 +29,11 @@ module Endeca
     private
 
     def get_response #:nodoc:
-      http = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Get.new(uri.request_uri)
       response = nil
-
       Endeca.log "ENDECA ADAPTER REQUEST"
       Endeca.log "    parameters => " + @query.inspect
       Endeca.log "           uri => " + uri.to_s
-      Endeca.bm  "  request time => " do response = http.request(request) end
+      Endeca.bm  "  request time => " do response = Net::HTTP.get_response(uri) end
 
       return response
     end
