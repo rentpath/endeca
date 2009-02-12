@@ -46,6 +46,11 @@ describe Endeca::Document do
     before do
       @query_options = {:foo => :bar}
     end
+    
+    it do
+      Endeca::Document.path nil
+      lambda{ Endeca::Document.find('') }.should raise_error(Endeca::RequestError)
+    end
 
     describe '#==' do
       it "should compare documents by id" do
@@ -228,6 +233,20 @@ describe Endeca::Document do
           Endeca::Document.all("query string")
         end
       end
+    end
+    
+    describe "with a collection_class on the document" do
+      before(:all) do
+        class SubDocumentCollection < Endeca::DocumentCollection; end
+        Endeca::Document.collection_class SubDocumentCollection
+        
+        Endeca::Request.stub!(:perform).and_return({})
+      end
+      
+      it "should initialize an collection of the correct class" do
+        Endeca::Document.all(:id => 1).should be_a_kind_of(SubDocumentCollection)
+      end
+    
     end
   end
 

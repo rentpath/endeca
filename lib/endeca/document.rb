@@ -13,7 +13,8 @@ module Endeca
     inherited_accessor :mappings, {}
     inherited_property :path
     inherited_property :default_params, {}
-
+    inherited_property :collection_class, DocumentCollection
+    
     reader :id
 
     attr_reader :raw, :properties
@@ -101,7 +102,7 @@ module Endeca
 
     # Returns all Documents matching the query options.
     def self.all(query_options={})
-      DocumentCollection.new(request(query_options), self)
+      get_collection_class.new(request(query_options), self)
     end
 
     # Returns a Document by id
