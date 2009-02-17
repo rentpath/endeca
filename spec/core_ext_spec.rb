@@ -73,4 +73,62 @@ describe String do
   end
 end
 
+describe "#inherited_accessor" do
+    
+  class SomeParent
+    inherited_accessor :a_hash, {:m => "my_value"}
+    inherited_accessor :a_string, "fibby foo"
+    inherited_accessor :a_array, ["atlanta"]
+  end
+
+  class A < SomeParent; end
+  class B < SomeParent; end
+
+  before do
+    A.a_hash[:a] = "a_value"
+    A.a_string = "a_string"
+
+    B.a_hash[:a] = "b_value"
+    B.a_string = "b_string"
+  end
+
+  it "should retrieve default value" do
+    SomeParent.a_hash[:m].should == "my_value"
+    SomeParent.a_string.should == "fibby foo"
+  end
+
+  it "should retrieve A hash value correctly" do
+    A.a_hash[:a].should == "a_value"
+  end
+
+  it "should retrieve A string value correctly" do
+    A.a_string.should == "a_string"
+  end
+
+  it "should retrieve A array value correctly" do
+    original = A.a_array
+
+    A.a_array << "jacksonville"
+    A.a_array.should == ["atlanta", "jacksonville"]
+
+    A.a_array = original
+  end
+
+  it "should retrieve B hash value correctly" do
+    B.a_hash[:a].should == "b_value"
+  end
+
+  it "should retrieve B string value correctly" do
+    B.a_string.should == "b_string"
+  end
+
+  it "should retrieve B array value correctly" do
+    original = B.a_array
+
+    B.a_array << "new york"
+    B.a_array.should == ["atlanta", "new york"]
+
+    B.a_array = original
+  end
+end
 # EOF

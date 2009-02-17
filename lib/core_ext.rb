@@ -59,8 +59,7 @@ class Class
       @#{accessor} = default
 
       def #{accessor}
-        return @#{accessor} if instance_variable_defined?(:@#{accessor})
-        superclass.send(:#{accessor})
+        @#{accessor} ||= superclass.send(:#{accessor}).dup
       end
     RUBY
   end
