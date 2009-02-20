@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{endeca}
-  s.version = "0.9.26"
+  s.version = "0.10.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rein Henrichs", "Andy Stone"]
-  s.date = %q{2009-02-16}
+  s.date = %q{2009-02-20}
   s.description = %q{An Endeca client library for Ruby.}
   s.email = %q{}
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.rdoc"]
