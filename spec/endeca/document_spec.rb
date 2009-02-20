@@ -189,7 +189,7 @@ describe Endeca::Document do
 
   describe '.by_id' do
     it 'should merge the id into the query options and call .first' do
-      Endeca::Document.should_receive(:first).with(:id => '1234')
+      Endeca::Document.should_receive(:first).with(:id => '1234', :skip_default_endeca_parameters => true)
       Endeca::Document.by_id('1234')
     end
   end
