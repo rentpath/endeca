@@ -29,13 +29,12 @@ module Endeca
     private
 
     def get_response #:nodoc:
-      response = nil
       Endeca.log "ENDECA ADAPTER REQUEST"
       Endeca.log "    parameters => " + @query.inspect
       Endeca.log "           uri => " + uri.to_s
-      Endeca.bm  "  request time => " do response = Net::HTTP.get_response(uri) end
+      Endeca.bm  "  request time => " do @response = Net::HTTP.get_response(uri) end
 
-      return response
+      return @response
     end
 
     # Raises exception Net::XXX (http error code) if an http error occured
