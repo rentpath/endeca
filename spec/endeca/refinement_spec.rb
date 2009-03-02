@@ -61,4 +61,12 @@ describe Endeca::Refinement do
     my_dimension = Endeca::Dimension.new(@dimension_value)
     @refinement.dimension_values.should == [my_dimension]
   end
+
+  it "should return an array of dimensions" do
+    refinement_dim_raw = mock("raw dimension refinement")
+    refinement_dim = mock(Endeca::RefinementDimension)
+    @refinement.attributes['Dimensions'] = [refinement_dim_raw]
+    Endeca::RefinementDimension.should_receive(:new).with(refinement_dim_raw).and_return(refinement_dim)
+    @refinement.dimensions.should == [refinement_dim]
+  end
 end

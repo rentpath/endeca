@@ -13,6 +13,10 @@ module Endeca
       values.map(&Dimension) if values
     end
 
+    reader('Dimensions' => :dimensions) do |values|
+      values.map(&RefinementDimension) if values
+    end
+
     attr_reader :raw
     def initialize(raw={})
       @raw = raw
