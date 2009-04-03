@@ -16,8 +16,16 @@ describe Endeca::Readers do
       @helper.should respond_to(:float_reader)
     end
   end
+  
+  describe ".field_names" do
+    it "should include added readers" do
+      @helper.reader(:helper_id)
+      @helper.field_names.should include(:helper_id)
+    end    
+  end
 
   describe ".reader" do
+    
     describe "with a symbol" do
       it "adds a reader that returns the attribute by that key" do
         @helper.reader(:helper_id)

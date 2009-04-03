@@ -15,6 +15,9 @@ module Endeca
     inherited_property :default_params, {}
     inherited_property :collection_class, DocumentCollection
     
+    inherited_accessor :reader_names, []
+    def self.field_names; reader_names; end
+    
     reader :id
 
     attr_reader :raw, :properties

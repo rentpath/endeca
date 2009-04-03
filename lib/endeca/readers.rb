@@ -32,6 +32,7 @@ module Endeca
       attrs.each{ |attr| hash[attr] = attr }
 
       hash.each do |variable, method|
+        reader_names << method if respond_to?(:reader_names)
         define_method(method) do
           begin
             block.call(attributes[variable.to_s])
