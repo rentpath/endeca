@@ -15,9 +15,12 @@ module Endeca
     end
 
     def perform
-      response = handle_response(get_response)
-      raise RequestError, endeca_error(response)[:message] if endeca_error?(response)
+      raise RequestError, endeca_error[:message] if endeca_error?
       return response
+    end
+    
+    def response
+      handle_response(get_response)
     end
 
     def uri
@@ -30,10 +33,10 @@ module Endeca
 
     private
     
-    def endeca_error(response)
+    def endeca_error
       method_response = response["methodResponse"]
-      fault = method_response && response["methodResponse"]["fault"]
-      values = fault && response["methodResponse"]["fault"]["value"]
+      fault = method_response && method_response["fault"]
+      values = fault && fault["value"]
       return nil unless values
       {
         :code => values["faultCode"].to_i,
@@ -41,8 +44,8 @@ module Endeca
       }
     end
 
-    def endeca_error?(response)
-      !endeca_error(response).nil?
+    def endeca_error?
+      !endeca_error.nil?
     end
 
     def get_response #:nodoc:
