@@ -1,6 +1,6 @@
 require 'lib/endeca'
 class Listing < Endeca::Document
-  path 'http://192.168.3.218:8888/bridge/JSONControllerServlet.do'
+  path "http://10.130.83.75:9888/bridge/JSONControllerServlet.do"
 
   reader \
     :address,
