@@ -34,6 +34,10 @@ describe Endeca::Request do
       it "should return the parsed JSON of the response body" do
         @request.perform.should == @response_hash
       end
+    
+      it "should not raise an error" do
+        lambda { @request.perform }.should_not raise_error
+      end
     end
 
     describe "when unsuccessful" do
@@ -46,20 +50,39 @@ describe Endeca::Request do
       end
 
     end
+    
+    describe "when the response contains an error hash" do
+      before do
+        @error_message = "com.endeca.soleng.urlformatter.QueryBuildException: com.endeca.navigation.UrlENEQueryParseException: java.lang.NumberFormatException: For input string: \"asdjkhfgasdfjkhg\""
+        @error_response = {
+          "methodResponse"=>
+            {"fault"=>
+              {"value"=>
+                {"faultCode"=>"-1",
+                 "faultString"=> @error_message}}}}
+        @error_request = Endeca::Request.new(@path)
+        @error_request.stub!(:handle_response).and_return(@error_response)
+      end
+      
+      it "should raise an Endeca::RequestError" do
+        lambda { @error_request.perform }.should raise_error(Endeca::RequestError, @error_message)
+      end
+    end
+
   end
 
   describe '#uri'
-    describe "with a hash of query options" do
-      it "should append the query options onto the url" do
-        query = {:foo => :bar}
-        Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
-      end
+  describe "with a hash of query options" do
+    it "should append the query options onto the url" do
+      query = {:foo => :bar}
+      Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
     end
+  end
 
-    describe "with a string of query options" do
-      it "should append the query options string onto the url" do
-        query = 'N=56'
-        Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
-      end
+  describe "with a string of query options" do
+    it "should append the query options string onto the url" do
+      query = 'N=56'
+      Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
     end
+  end
 end

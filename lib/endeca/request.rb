@@ -15,7 +15,9 @@ module Endeca
     end
 
     def perform
-      handle_response(get_response)
+      response = handle_response(get_response)
+      raise RequestError, endeca_error(response)[:message] if endeca_error?(response)
+      return response
     end
 
     def uri
@@ -27,6 +29,21 @@ module Endeca
     end
 
     private
+    
+    def endeca_error(response)
+      method_response = response["methodResponse"]
+      fault = method_response && response["methodResponse"]["fault"]
+      values = fault && response["methodResponse"]["fault"]["value"]
+      return nil unless values
+      {
+        :code => values["faultCode"].to_i,
+        :message => values["faultString"]
+      }
+    end
+
+    def endeca_error?(response)
+      !endeca_error(response).nil?
+    end
 
     def get_response #:nodoc:
       Endeca.log "ENDECA ADAPTER REQUEST"
