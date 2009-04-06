@@ -93,15 +93,16 @@ module Endeca
 
     # Returns the first Document matching the query options.
     def self.first(query_options={})
-      response  = request(query_options)
-      if response['AggrRecords'] 
-        record = response['AggrRecords'].first['Records'].first
+      response = request(query_options)
+      record = if response['AggrRecords'] 
+        response['AggrRecords'].first['Records'].first
+      elsif response['Records']
+        response['Records'].first
       else
-        record = response['Records'].first
+        nil
       end
+
       record && new(record)
-    rescue Exception 
-      nil
     end
 
     # Returns all Documents matching the query options.
