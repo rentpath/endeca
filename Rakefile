@@ -13,6 +13,8 @@ rescue LoadError
   end
 end
 
+begin; require 'metric_fu'; rescue LoadError; end
+
 ensure_in_path 'lib'
 require 'endeca'
 
