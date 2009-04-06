@@ -1,8 +1,8 @@
 module Endeca
   class RefinementDimension
     include Comparable
+    include Readers
     extend ClassToProc
-    extend Readers
 
     reader \
       "DimensionName"  => :name,

@@ -1,8 +1,8 @@
 module Endeca
   class Dimension
     include Comparable
+    include Readers
     extend ClassToProc
-    extend Readers
 
     reader \
       "DimValueName"  => :name,

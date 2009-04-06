@@ -1,7 +1,7 @@
 module Endeca
   class Refinement
+    include Readers
     extend ClassToProc
-    extend Readers
 
     reader 'DimensionName' => :name,
       'ExpansionLink' => :expansion_link,

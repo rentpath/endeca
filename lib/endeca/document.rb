@@ -6,8 +6,8 @@ module Endeca
   # The +reader+ declaration provided by Readers can also handle basic data transformations (i.e.
   # typecasting) and a few basic examples are provided (i.e. +integer_reader+).
   class Document
+    include Readers
     extend ClassToProc
-    extend Readers
     extend Transformer
 
     inherited_accessor :mappings, {}
@@ -131,6 +131,5 @@ module Endeca
         URI.unescape(query_options)
       end
     end
-
   end
 end

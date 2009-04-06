@@ -353,5 +353,12 @@ describe Endeca::Document do
       end
     end
   end
+  
+  describe "#method_missing" do
+    it "should include a suggestion to add a reader" do
+      lambda{ @document.missing_method }.
+        should raise_error(NoMethodError, "undefined method 'missing_method' for #{@document.inspect}. Do you need to add a reader for it?")
+    end
+  end
 
 end

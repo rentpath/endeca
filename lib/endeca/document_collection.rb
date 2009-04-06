@@ -17,8 +17,8 @@ module Endeca
   # as if it were an array of Document objects. (Array delegation pattern
   # borrowed from Rake::FileList)
   class DocumentCollection
+    include Readers
     extend ClassToProc
-    extend Readers
 
     attr_reader :raw
     def initialize(raw, document_klass=Document)

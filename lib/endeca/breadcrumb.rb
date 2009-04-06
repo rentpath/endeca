@@ -1,7 +1,7 @@
 module Endeca
   
   class Breadcrumb
-    extend Readers
+    include Readers
 
     def self.create(raw)
       name = raw['Type']
