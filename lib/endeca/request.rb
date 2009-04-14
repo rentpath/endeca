@@ -27,8 +27,8 @@ module Endeca
       return @uri if @uri
 
       @uri = URI.parse(@path)
-      @uri.query = query_string unless @query.include?("/_/")
-      @uri = URI.parse("#{@path}#{@query}") if @query.include?("/_/")
+      @uri.query = query_string unless !@query || @query.include?("/_/")
+      @uri = URI.parse("#{@path}#{@query}") if @query && @query.include?("/_/")
       @uri
     end
 
