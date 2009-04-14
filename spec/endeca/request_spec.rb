@@ -71,12 +71,26 @@ describe Endeca::Request do
 
   end
 
-  describe '#uri'
-  describe "with a hash of query options" do
-    it "should append the query options onto the url" do
-      query = {:foo => :bar}
-      Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
+  describe '#uri' do
+    
+    describe "with a hash of query options" do
+      
+      it "should append the query options onto the url" do
+        query = {:foo => :bar}
+        Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
+      end
+      
     end
+    
+    describe "with a query with '/_/' in it" do
+      
+      it "should not insert the ? before the query" do
+        query = "/Beds-2/Baths-3/Dishwasher/_/N=324432/Ne=listing?test=true"
+        Endeca::Request.new(@path, query).uri.to_s.should == "#{@path}#{query}"
+      end
+      
+    end
+    
   end
 
   describe "with a string of query options" do
