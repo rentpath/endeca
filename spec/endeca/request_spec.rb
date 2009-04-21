@@ -6,6 +6,7 @@ require File.join(File.dirname(__FILE__), %w[.. spec_helper])
 describe Endeca::Request do
   before do
     @path = 'http://example.com/foobar'
+    Endeca.cache_store = nil
   end
 
   describe '.perform' do

@@ -21,6 +21,8 @@ require 'endeca/request'
 require 'endeca/document_collection'
 require 'endeca/document'
 
+require 'endeca/caching'
+
 module Endeca
   extend Benchmarking
   extend Logging
