@@ -24,6 +24,11 @@ describe Endeca::Request do
     before do
       @request = Endeca::Request.new(@path)
     end
+    
+    it "should not make more than one request" do
+      @request.should_receive(:handle_response).exactly(1).times.and_return({})
+      @request.perform
+    end    
 
     describe "when successful" do
       before do

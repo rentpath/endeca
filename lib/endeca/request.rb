@@ -20,7 +20,7 @@ module Endeca
     end
     
     def response
-      handle_response(get_response)
+      @response ||= handle_response(get_response)
     end
 
     def uri
