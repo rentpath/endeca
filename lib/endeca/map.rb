@@ -39,6 +39,19 @@ module Endeca
 
     def into?; @into end
 
+    # Mapping actually resides in another key, value pair. Uses Endeca default
+    # join characters (can be overridden by specifying +with+ and/or +join+).
+    #
+    # Example:
+    #   map(:city => :propertycity).split_into(:ntk => :ntt)
+    #
+    #   Document.all(:city => 'Atlanta, New York, Los Angeles')   =>
+    #     ?ntk=propercity|propertycity|propertycity&ntt=>Atlanta|New York|Los Angeles
+    def split_into(hash, split_value = ',')
+      into(hash)
+      @split_value = split_value
+    end
+
     # When mapping multiple key/value pairs to a single parameter value (via
     # +into+), use this character to join a key with a value.
     def with(character)
@@ -131,8 +144,14 @@ module Endeca
       
       old_key, old_value = Array(@new_query).flatten
       new_key, new_value = Array(@into).flatten
+
+      #puts "===> old_key: #{old_key} \n old_value: #{old_value} \n new_key: #{new_key} \n new_value: #{new_value}"
       if new_value
-        @new_query = {new_key => old_key, new_value => old_value}
+        if @split_value
+          @new_query = perform_split(old_key, old_value, new_key, new_value)
+        else
+          @new_query = {new_key => old_key, new_value => old_value}
+        end
       else
         new_value = [old_key, old_value].compact.join(@with)
         new_value = "#{@enclose}(#{new_value})" if enclose?
@@ -150,6 +169,17 @@ module Endeca
     end
 
     protected
+
+    def perform_split(old_key, old_value, new_key, new_value)
+      key = []
+      value = [] 
+      old_value.split(@split_value).each do |val|
+        key << old_key
+        value << val
+      end
+
+      {new_key => key.join(@join), new_value => value.join(@join)}
+    end
 
     def equality_elements # :nodoc:
       [@old_key, @new_key, @join, @with, @join]

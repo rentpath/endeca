@@ -40,6 +40,15 @@ describe Endeca::Document do
           should include(Endeca::Document.transform_query_options(:limit => 10, :expand_refinements => 1))
       end
     end
+
+    describe "with splitting values" do
+      it "should duplicate the key for each value passed" do
+        Endeca::Document.map(:features => :feature_cat).split_into(:ntk => :ntt)
+        [
+          {:ntk=>"feature_cat|feature_cat", :ntt=>"Driveway|Alarm"}
+        ].should include(Endeca::Document.transform_query_options(:features => 'Driveway,Alarm'))
+      end
+    end
   end
 
   describe '.find' do
