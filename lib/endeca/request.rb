@@ -1,9 +1,10 @@
 require 'uri'
+require 'lib/endeca/caching'
+
 module Endeca
   class RequestError < ::StandardError; end
 
   class Request
-
     def self.perform(path, query=nil)
       raise RequestError, "Must provide a path" unless path
       new(path, query).perform
@@ -77,5 +78,7 @@ module Endeca
 
       query_string_parts.empty? ? nil : query_string_parts.join('&')
     end
+    
+    include Caching
   end
 end

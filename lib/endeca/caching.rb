@@ -19,7 +19,6 @@ module Endeca #:nodoc:
     end
   end
 
-
   # Caching is a way to speed up slow Endeca queries by keeping the result of
   # an Endeca request around to be reused by subequest requests. Caching is
   # turned off by default.
@@ -39,26 +38,19 @@ module Endeca #:nodoc:
   #   Endeca.cache_store = :drb_store, "druby://localhost:9192"
   #   Endeca.cache_store = :mem_cache_store, "localhost"
   #   Endeca.cache_store = MyOwnStore.new("parameter")
-  module Caching
-    def get_response_with_caching #:nodoc:
-      return get_response_without_caching unless Endeca.perform_caching?
-
-      fetch(cache_key) { get_response_without_caching }
+  module Caching    
+    def self.included(base)
+      base.alias_method_chain :get_response, :caching
     end
 
     private
 
-    def fetch(key, &block)
-      Endeca.cache_store.fetch(key, &block)
+    def get_response_with_caching #:nodoc:
+      return get_response_without_caching unless Endeca.perform_caching?
+      fetch { get_response_without_caching }
     end
 
-    def cache_key
-      Digest::SHA1.hexdigest uri.to_s
-    end
+    def cache_key;     Digest::SHA1.hexdigest uri.to_s end
+    def fetch(&block); Endeca.cache_store.fetch(cache_key, &block) end
   end
-end
-
-Endeca::Request.class_eval do
-  include Endeca::Caching
-  alias_method_chain :get_response, :caching
 end
