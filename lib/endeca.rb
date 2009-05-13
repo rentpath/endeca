@@ -17,18 +17,18 @@ require 'endeca/refinement_dimension'
 require 'endeca/refinement'
 require 'endeca/breadcrumbs'
 require 'endeca/breadcrumb'
+require 'endeca/caching'
 require 'endeca/request'
 require 'endeca/document_collection'
 require 'endeca/document'
 
-require 'endeca/caching'
 
 module Endeca
   extend Benchmarking
   extend Logging
 
   # :stopdoc:
-  VERSION = '1.2.0'
+  VERSION = '1.3.0'
   # :startdoc:
 
   # Returns the version string for the library.
