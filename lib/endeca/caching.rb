@@ -10,12 +10,26 @@ require 'endeca'
 module Endeca #:nodoc:
 
   class << self
-    def perform_caching?; !@cache_store.nil? end
-    def cache_store;      @cache_store;      end
+    def perform_caching?
+      !cache_store.nil?
+    end
+
+    def cache_store
+      @cache_store
+    end
+
+    def disable_caching
+      @cache_store = nil
+    end
 
     # Defines the storage option for cached queries
+    #
+    # ActiveSupport::Cache.lookup_store will return MemoryStore 
+    # if nil is passed in and we don't want that.
     def cache_store=(store_option)
-      @cache_store = ActiveSupport::Cache.lookup_store(store_option)
+      if store_option
+        @cache_store = ActiveSupport::Cache.lookup_store(store_option)
+      end
     end
   end
 

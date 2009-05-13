@@ -1,8 +1,14 @@
 require File.join(File.dirname(__FILE__), %w[.. spec_helper])
 
 describe Endeca::Request do
-  before(:all){ Endeca.cache_store = :memory_store }
-  after(:all){ Endeca.cache_store = nil }
+  before(:all) do 
+    Endeca.cache_store = :memory_store
+  end
+
+  after(:all) do 
+    Endeca.disable_caching
+  end
+
   before do
     @path     = "http://example.com"
     @query    = "foo=bar"
@@ -14,7 +20,7 @@ describe Endeca::Request do
     @request.stub!(:cache_key).and_return(@cache_key)
   end
 
-  context "When a cached response is available" do
+  describe "When a cached response is available" do
     before do
       Endeca.cache_store.write(@cache_key, @response)
     end
@@ -29,7 +35,7 @@ describe Endeca::Request do
     end
   end
 
-  context "When a cached response is not available" do
+  describe "When a cached response is not available" do
     before do
       Endeca.cache_store.delete(@cache_key)
     end
@@ -45,5 +51,23 @@ describe Endeca::Request do
       @request.perform
       Endeca.cache_store.read(@request.send(:cache_key)).should == @response
     end
+  end
+end
+
+
+describe Endeca::Caching do
+  it "should return false when cache store is not set" do
+    Endeca.perform_caching?.should be_false
+  end
+
+  it "should return false when if disable_caching has been set" do
+    Endeca.cache_store = :memory_store
+    Endeca.disable_caching
+    Endeca.perform_caching?.should be_false
+  end
+
+  it "should return memory store" do
+    Endeca.cache_store = :memory_store
+    Endeca.cache_store.class.should == ActiveSupport::Cache::MemoryStore
   end
 end
