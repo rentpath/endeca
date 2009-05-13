@@ -1,5 +1,4 @@
 require 'uri'
-require 'lib/endeca/caching'
 
 module Endeca
   class RequestError < ::StandardError; end
