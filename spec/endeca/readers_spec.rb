@@ -7,7 +7,7 @@ describe Endeca::Readers do
 
   before do
     @helper = Class.new(Endeca::Document)
-    @a_helper = @helper.new('Properties' => {'helper_id' => "1"})
+    @a_helper = @helper.new('Properties' => {'helper_id' => "1", 'nil_id' => nil, 'empty_field' => ''})
   end
 
   describe ".add_reader" do
@@ -55,6 +55,27 @@ describe Endeca::Readers do
     it "adds a reader that casts the value to an integer" do
       @helper.integer_reader(:helper_id)
       @a_helper.helper_id.should == 1
+    end
+    
+    describe "when the value is nil" do
+      it "should return 0" do
+        @helper.integer_reader(:nil_id)
+        @a_helper.nil_id.should == 0
+      end
+    end
+    
+    describe "when the field does not exist" do
+      it "should return 0" do
+        @helper.integer_reader(:non_existant_field)
+        @a_helper.non_existant_field.should == 0
+      end
+    end
+
+    describe "when the value is an empty string" do
+      it "should return 0" do
+        @helper.integer_reader(:empty_field)
+        @a_helper.empty_field.should == 0
+      end
     end
   end
 

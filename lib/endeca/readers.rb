@@ -49,7 +49,7 @@ module Endeca
       # ==== Examples
       #   integer_reader :id, :rating
       def integer_reader(*attrs)
-        reader(*attrs) { |value| Integer(value) }
+        reader(*attrs) { |value| value.blank? ? 0 : Integer(value) }
       end
 
       # Typecasts attributes as BigDecimal
