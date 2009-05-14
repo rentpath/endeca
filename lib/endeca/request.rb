@@ -1,5 +1,7 @@
 require 'uri'
 
+require File.join(File.dirname(__FILE__), "caching")
+
 module Endeca
   class RequestError < ::StandardError; end
 
