@@ -111,6 +111,10 @@ module Endeca
       equality_elements == other.equality_elements
     end
 
+    def inspect
+      perform({}).inspect
+    end
+
     private
 
     def transformations
