@@ -32,6 +32,16 @@ module Endeca
       id == other.id
     end
 
+    def self.inspect
+      return <<-INSPECT
+#<#{self}>
+Path: #{get_path.inspect}
+Collection Class: #{get_collection_class.inspect}"
+Mappings:\n\t#{mappings.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.to_s} 
+DefaultParams:\n\t#{get_default_params.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.to_s} 
+      INSPECT
+    end
+
     def inspect
       "#<#{self.class}:0x#{self.object_id.to_s(16)}>"
     end
