@@ -27,7 +27,7 @@ module Endeca
   extend Logging
 
   # :stopdoc:
-  VERSION = '1.3.1'
+  VERSION = '1.3.3'
   # :startdoc:
 
   # Returns the version string for the library.
@@ -41,11 +41,13 @@ module Endeca
     attr_accessor :logger
     attr_accessor :debug
     attr_accessor :benchmark
+    attr_accessor :timeout
   end
 
   self.logger = Logger.new(STDOUT)
   self.debug  = false
   self.benchmark  = false
+  self.timeout = 5
 
   # Endeca URIs require colons to be escaped
   def self.escape(str)

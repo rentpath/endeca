@@ -1,6 +1,15 @@
 require 'uri'
 require 'endeca/caching'
 
+begin
+  require 'system_timer'
+  RequestTimer = SystemTimer
+rescue LoadError
+  require 'timeout'
+  RequestTimer = Timeout
+end
+
+
 module Endeca
   class RequestError < ::StandardError; end
 
@@ -54,7 +63,11 @@ module Endeca
       Endeca.log "ENDECA ADAPTER REQUEST"
       Endeca.log "    parameters => " + @query.inspect
       Endeca.log "           uri => " + uri.to_s
-      Endeca.bm  "  request time => " do @response = Net::HTTP.get_response(uri) end
+      Endeca.bm  "  request time => " do 
+        RequestTimer.timeout(Endeca.timeout) do
+          @response = Net::HTTP.get_response(uri) 
+        end
+      end
 
       return @response
     end
