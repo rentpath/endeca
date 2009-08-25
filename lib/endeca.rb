@@ -27,7 +27,7 @@ module Endeca
   extend Logging
 
   # :stopdoc:
-  VERSION = '1.3.3'
+  VERSION = '1.3.4'
   # :startdoc:
 
   # Returns the version string for the library.
@@ -42,15 +42,36 @@ module Endeca
     attr_accessor :debug
     attr_accessor :benchmark
     attr_accessor :timeout
+
+    def analyze?
+      debug && logger && benchmark
+    end
+
+    def timer
+      @timer ||= get_timer
+    end
+
+    private
+
+    def get_timer
+      require 'system_timer'
+      SystemTimer
+    rescue LoadError
+      require 'timeout'
+      Timeout
+    end
   end
 
   self.logger = Logger.new(STDOUT)
   self.debug  = false
   self.benchmark  = false
-  self.timeout = 5
+  self.timeout = 8
+
 
   # Endeca URIs require colons to be escaped
   def self.escape(str)
     URI.escape(str, /[^-_.!~*'()a-zA-Z\d;\/?@&=+$,\[\]]/n)
   end
 end
+
+puts ">> Using Endeca gem version: #{Endeca::VERSION}"

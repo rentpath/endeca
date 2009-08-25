@@ -109,4 +109,14 @@ describe Endeca::Map do
         should == {:F => "first_name:1|last_name:1|email:1"}
     end
   end
+
+  describe ".inspect" do
+    it "should return details of the map" do
+      query = {:foo => "bazz", :bizz => "somevalue"}
+      map = Endeca::Map.new :foo
+      map.into(:Ntk => :Ntt)
+      map.inspect.should include(":Ntk=>\"foo\"")
+      map.inspect.should include(":Ntt=>\"\"")
+    end
+  end
 end

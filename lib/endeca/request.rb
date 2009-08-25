@@ -1,15 +1,6 @@
 require 'uri'
 require 'endeca/caching'
 
-begin
-  require 'system_timer'
-  RequestTimer = SystemTimer
-rescue LoadError
-  require 'timeout'
-  RequestTimer = Timeout
-end
-
-
 module Endeca
   class RequestError < ::StandardError; end
 
@@ -26,6 +17,7 @@ module Endeca
 
     def perform
       raise RequestError, endeca_error[:message] if endeca_error?
+      Endeca.increase_metric(:request_count, 1)
       return response
     end
     
@@ -63,8 +55,8 @@ module Endeca
       Endeca.log "ENDECA ADAPTER REQUEST"
       Endeca.log "    parameters => " + @query.inspect
       Endeca.log "           uri => " + uri.to_s
-      Endeca.bm  "  request time => " do 
-        RequestTimer.timeout(Endeca.timeout) do
+      Endeca.bm(:request_time, "#{@path} #{@query.inspect}") do 
+        Endeca.timer.timeout(Endeca.timeout) do
           @response = Net::HTTP.get_response(uri) 
         end
       end
@@ -76,7 +68,9 @@ module Endeca
     def handle_response(response) #:nodoc:
       case response
       when Net::HTTPSuccess
-        JSON.parse(response.body)
+        Endeca.bm :parse_time do
+          @json = JSON.parse(response.body)
+        end
       else
         response.error! # raises exception corresponding to http error Net::XXX
       end

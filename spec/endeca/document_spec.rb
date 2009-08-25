@@ -77,7 +77,7 @@ describe Endeca::Document do
       end
     end
 
-    describe '#inspect' do
+    describe '.inspect' do
       it "includes the class name" do
         @document.inspect.should include(Endeca::Document.name)
       end
@@ -370,4 +370,9 @@ describe Endeca::Document do
     end
   end
 
+  describe "#inspect" do
+    it "should return details of the Document class" do
+      Endeca::Document.inspect.should == "#<Endeca::Document>\nPath: \"http://endeca.example.com\"\nCollection Class: SubDocumentCollection\"\nMappings:\n\tfoo: {:new_foo=>nil}\n\t \nDefaultParams:\n\t \n"
+    end
+  end
 end
