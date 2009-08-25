@@ -15,6 +15,6 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--main", "README.rdoc"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{endeca}
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.4}
   s.summary = %q{An Endeca client library for Ruby}
 end
