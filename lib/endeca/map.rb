@@ -112,7 +112,7 @@ module Endeca
     end
 
     def inspect
-      perform({}).inspect
+      perform({ @old_key => "inspect_data" }).inspect
     end
 
     private
@@ -149,7 +149,6 @@ module Endeca
       old_key, old_value = Array(@new_query).flatten
       new_key, new_value = Array(@into).flatten
 
-      #puts "===> old_key: #{old_key} \n old_value: #{old_value} \n new_key: #{new_key} \n new_value: #{new_value}"
       if new_value
         if @split_value
           @new_query = perform_split(old_key, old_value, new_key, new_value)
