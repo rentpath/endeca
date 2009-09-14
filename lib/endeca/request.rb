@@ -1,5 +1,4 @@
 require 'uri'
-require 'endeca/caching'
 
 module Endeca
   class RequestError < ::StandardError; end
@@ -85,7 +84,5 @@ module Endeca
 
       query_string_parts.empty? ? nil : query_string_parts.join('&')
     end
-    
-    include Caching
   end
 end
