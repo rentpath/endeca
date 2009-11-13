@@ -39,6 +39,19 @@ module Endeca
 
     def into?; @into end
 
+    def having(hash)
+      hash = hash.intern if hash.respond_to?(:intern)
+      if hash.is_a?(Hash)
+        raise ArgumentError, "Only one key/value pair allowed" if hash.size > 1        
+        hash = hash.to_a.flatten
+        hash = {hash.first.to_sym => hash.last.to_sym}
+      end
+      @having = hash
+      self
+    end
+
+    def having?; @having end
+
     # Mapping actually resides in another key, value pair. Uses Endeca default
     # join characters (can be overridden by specifying +with+ and/or +join+).
     #
@@ -100,6 +113,7 @@ module Endeca
       perform_transformation
       perform_map
       perform_into
+      perform_having
       perform_join
 
       return @new_query
@@ -159,6 +173,15 @@ module Endeca
         new_value = [old_key, old_value].compact.join(@with)
         new_value = "#{@enclose}(#{new_value})" if enclose?
         @new_query = {new_key => new_value}
+      end
+    end
+
+    def perform_having
+      return unless having?
+      new_key, new_value = Array(@having).flatten
+
+      if new_value
+        @new_query[new_key] = new_value
       end
     end
 

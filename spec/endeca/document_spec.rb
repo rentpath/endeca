@@ -30,6 +30,17 @@ describe Endeca::Document do
       end
     end
 
+    describe "with two maps that join on the same key in a parent hash with a having" do
+      it "should join the key and value on the delimiter" do
+        Endeca::Document.map(:state => :propertystate).into(:ntk => :ntt).having(:ntx => 'mode matchall')
+        Endeca::Document.map(:city => :propertycity).into(:ntk => :ntt).having(:ntx => 'mode matchboolean')
+        [
+          {:ntk=>"propertycity|propertystate", :ntt=>"Atlanta|Georgia", :ntx=>'mode matchboolean|mode matchall'},
+          {:ntk=>"propertystate|propertycity", :ntt=>"Georgia|Atlanta", :ntx=>'mode matchall|mode matchboolean'}
+        ].should include(Endeca::Document.transform_query_options(:city => 'Atlanta', :state => 'Georgia'))
+      end
+    end
+
     describe "with two maps that join on the same key without mapping to a hash" do
       it "should join on the delimiter" do
         Endeca::Document.map(:limit => :recs_per_page).into(:M)
