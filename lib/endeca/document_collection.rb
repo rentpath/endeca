@@ -18,7 +18,6 @@ module Endeca
   # borrowed from Rake::FileList)
   class DocumentCollection
     include Readers
-    extend ClassToProc
 
     attr_reader :raw
     def initialize(raw, document_klass=Document)
@@ -59,9 +58,9 @@ module Endeca
     # The internal collection of Document objects. Array methods are delegated here. 
     def documents
       if @raw['Records']
-        @documents ||= @raw['Records'].map(&@document_klass)
+        @documents ||= @raw['Records'].map{|record| @document_klass.new(record)}
       elsif aggregate?
-        @documents ||= @raw['AggrRecords'].map{|aggregate| aggregate['Records'].first}.map(&@document_klass)
+        @documents ||= @raw['AggrRecords'].map{|aggregate| aggregate['Records'].first}.map{|record| @document_klass.new(record)}
       else
         []
       end
@@ -73,12 +72,12 @@ module Endeca
 
     # The collection of Refinement objects for the collection.
     def refinements
-      @refinements ||= (@raw['Refinements'] || []).map(&Refinement)
+      @refinements ||= (@raw['Refinements'] || []).map{|data| Refinement.new(data)}
     end
 
     # The collection of Breadcrumb objects for the collection.
     def breadcrumbs
-      @breadcrumbs ||= (@raw['Breadcrumbs'] || []).map(&Breadcrumb)
+      @breadcrumbs ||= (@raw['Breadcrumbs'] || []).map{|data| Breadcrumb.create(data)}
     end
 
     # Return the refinement by name

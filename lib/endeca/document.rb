@@ -7,7 +7,6 @@ module Endeca
   # typecasting) and a few basic examples are provided (i.e. +integer_reader+).
   class Document
     include Readers
-    extend ClassToProc
     extend Transformer
 
     inherited_accessor :mappings, {}
@@ -52,7 +51,7 @@ DefaultParams:\n\t#{get_default_params.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.t
       @dimensions = {}
       (raw['Dimensions'] || {}).each do |name, values|
         values = [values] unless Array === values
-        @dimensions[name] = values.map(&Dimension)
+        @dimensions[name] = values.map{|value| Dimension.new(value)}
       end
       @dimensions
     end

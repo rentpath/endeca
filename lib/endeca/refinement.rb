@@ -1,7 +1,6 @@
 module Endeca
   class Refinement
     include Readers
-    extend ClassToProc
 
     reader 'DimensionName' => :name,
       'ExpansionLink' => :expansion_link,
@@ -10,11 +9,11 @@ module Endeca
     integer_reader 'DimensionID' => :id
 
     reader('DimensionValues' => :dimension_values) do |values|
-      values.map(&Dimension) if values
+      values.map{|value| Dimension.new(value)} if values
     end
 
     reader('Dimensions' => :dimensions) do |values|
-      values.map(&RefinementDimension) if values
+      values.map{|value| RefinementDimension.new(value)} if values
     end
 
     attr_reader :raw

@@ -17,10 +17,6 @@ module Endeca
       breadcrumb_class.new(raw)
     end
     
-    def self.to_proc
-      proc(&method(:create))
-    end
-
     attr_reader :raw
     def initialize(raw={})
       @raw = raw

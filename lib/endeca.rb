@@ -4,7 +4,6 @@ require 'logger'
 
 $:.unshift(File.dirname(__FILE__))
 require 'core_ext'
-require 'class_to_proc'
 require 'endeca/logging'
 require 'endeca/benchmarking'
 require 'endeca/readers'
