@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'fake_web'
-require 'json'
 require File.join(File.dirname(__FILE__), %w[.. spec_helper])
 
 describe Endeca::Request do
@@ -58,9 +55,9 @@ describe Endeca::Request do
       end
     
     end
-    
+
     describe "Yajl parser" do
-      it "should return Endeca::RequestError when malformed JSON is returned"
+      it "should return Endeca::RequestError when malformed JSON is returned" do
         @curl_obj = mock(:response_code => 200, :body_str => "!@!@#@SDSD}")
         Curl::Easy.stub!(:perform).and_return(@curl_obj)
         lambda {@request.perform}.should raise_error(Endeca::RequestError)
@@ -68,34 +65,34 @@ describe Endeca::Request do
     end
     
     describe "when the response contains an error hash" do
-         before do
-           @error_message = "com.endeca.soleng.urlformatter.QueryBuildException: com.endeca.navigation.UrlENEQueryParseException: java.lang.NumberFormatException: For input string: \"asdjkhfgasdfjkhg\""
-           @error_response = {
-             "methodResponse"=>
-               {"fault"=>
-                 {"value"=>
-                   {"faultCode"=>"-1",
-                    "faultString"=> @error_message}}}}
-           @error_request = Endeca::Request.new(@path)
-           @error_request.stub!(:handle_response).and_return(@error_response)
-         end
+      before do
+        @error_message = "com.endeca.soleng.urlformatter.QueryBuildException: com.endeca.navigation.UrlENEQueryParseException: java.lang.NumberFormatException: For input string: \"asdjkhfgasdfjkhg\""
+        @error_response = {
+          "methodResponse"=>
+            {"fault"=>
+              {"value"=>
+                {"faultCode"=>"-1", "faultString"=> @error_message}
+              }
+            }
+        }
+@error_request = Endeca::Request.new(@path)
+@error_request.stub!(:handle_response).and_return(@error_response)
+      end
          
-         it "should raise an Endeca::RequestError" do
-           lambda { @error_request.perform }.should raise_error(Endeca::RequestError, @error_message)
-         end
-       end
+      it "should raise an Endeca::RequestError" do
+        lambda { @error_request.perform }.should raise_error(Endeca::RequestError, @error_message)
+      end
+    end
+
+  end # perform
 
   describe '#uri' do
-    
     describe "with a hash of query options" do
-      
       it "should append the query options onto the url" do
         query = {:foo => :bar}
         Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
       end
-      
     end
-    
   end
 
   describe "with a string of query options" do
