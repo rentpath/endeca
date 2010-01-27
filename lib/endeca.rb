@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'curb'
 require 'yajl'
 require 'logger'
