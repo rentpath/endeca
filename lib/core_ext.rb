@@ -1,3 +1,13 @@
+module Kernel
+  def desire(library)
+    require library
+    true
+  rescue LoadError
+    STDERR.puts "warning: #{library} gem desired but not found."
+    false
+  end
+end
+
 class Object
   def blank?
     respond_to?(:empty?) ? empty? : !self
