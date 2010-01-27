@@ -1,4 +1,3 @@
-require 'uri'
 
 module Endeca
   class RequestError < ::StandardError; end
@@ -25,12 +24,8 @@ module Endeca
     end
 
     def uri
-      return @uri if @uri
-
-      @uri = URI.parse(@path)
-      @uri.query = query_string unless !@query || @query.include?("/_/")
-      @uri = URI.parse("#{@path}#{@query}") if @query && @query.include?("/_/")
-      @uri
+      path_query = query_string
+      @uri = path_query ? "#{@path}?#{path_query}" : @path
     end
 
     private
@@ -51,38 +46,43 @@ module Endeca
     end
 
     def get_response #:nodoc:
-      Endeca.log "ENDECA ADAPTER REQUEST"
-      Endeca.log "    parameters => " + @query.inspect
-      Endeca.log "           uri => " + uri.to_s
-      Endeca.bm(:request_time, "#{@path} #{@query.inspect}") do 
-        Endeca.timer.timeout(Endeca.timeout) do
-          @response = Net::HTTP.get_response(uri) 
-        end
-      end
+       Endeca.log "ENDECA ADAPTER REQUEST"
+       Endeca.log "    parameters => " + @query.inspect
+       Endeca.log "           uri => " + uri.to_s
+       Endeca.bm(:request_time, "#{@path} #{@query.inspect}") do 
+         begin
+           @response = Curl::Easy.perform(uri.to_s) do |curl|
+             curl.timeout = Endeca.timeout
+           end
+         rescue => e
+           raise RequestError, e.message
+         end
+       end
 
-      return @response
-    end
+       return @response
+     end
 
-    # Raises exception Net::XXX (http error code) if an http error occured
-    def handle_response(response) #:nodoc:
-      case response
-      when Net::HTTPSuccess
-        Endeca.bm :parse_time do
-          @json = JSON.parse(response.body)
-        end
-      else
-        response.error! # raises exception corresponding to http error Net::XXX
-      end
+     def handle_response(response) #:nodoc:
+       case response.response_code.to_s
+       when "200"
+         Endeca.bm :parse_time do
+           begin
+             @json = Yajl::Parser.parse(response.body_str)
+           rescue Yajl::ParseError => e
+             raise RequestError, "JSON Parse error: #{e}"
+           end
+         end
+       else
+         raise RequestError, "#{response.response_code} HTTP Error"
+       end
+     end
 
-    rescue => e
-      raise RequestError, e.message
-    end
+     def query_string
+       @path.match(/\?(.*)$/)
+       query_string_parts = [$1, @query.to_endeca_params]
+       query_string_parts.reject!{ |s| s.nil? || s.empty? }
 
-    def query_string
-      query_string_parts = [@uri.query, @query.to_endeca_params]
-      query_string_parts.reject!{ |s| s.nil? || s.empty? }
-
-      query_string_parts.empty? ? nil : query_string_parts.join('&')
-    end
+       query_string_parts.empty? ? nil : query_string_parts.join('&')
+     end
   end
 end

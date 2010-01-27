@@ -1,6 +1,6 @@
 require 'rubygems'
-require 'net/http'
-require 'json'
+require 'curb'
+require 'yajl'
 require 'logger'
 
 $:.unshift(File.dirname(__FILE__))
@@ -26,7 +26,7 @@ module Endeca
   extend Logging
 
   # :stopdoc:
-  VERSION = '1.3.8'
+  VERSION = '1.4.0'
   # :startdoc:
 
   # Returns the version string for the library.

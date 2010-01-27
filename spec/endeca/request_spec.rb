@@ -32,8 +32,10 @@ describe Endeca::Request do
 
     describe "when successful" do
       before do
+        @response_json = "{\"foo\":\"bar\"}"
         @response_hash = {"foo" => "bar"}
-        FakeWeb.register_uri(@path, :string => @response_hash.to_json)
+        @curl_obj = mock(:body_str => @response_json)
+        Curl::Easy.stub!(:perform).and_return(@curl_obj)
       end
 
       it "should return the parsed JSON of the response body" do
@@ -44,37 +46,44 @@ describe Endeca::Request do
         lambda { @request.perform }.should_not raise_error
       end
     end
-
+    
     describe "when unsuccessful" do
       before do
-        FakeWeb.register_uri(@path, :status => ['404', 'Not Found'])
-      end
-
-      it "should raise an Endeca::RequestError" do
-        lambda {@request.perform}.should raise_error(Endeca::RequestError, '404 "Not Found"')
-      end
-
-    end
-    
-    describe "when the response contains an error hash" do
-      before do
-        @error_message = "com.endeca.soleng.urlformatter.QueryBuildException: com.endeca.navigation.UrlENEQueryParseException: java.lang.NumberFormatException: For input string: \"asdjkhfgasdfjkhg\""
-        @error_response = {
-          "methodResponse"=>
-            {"fault"=>
-              {"value"=>
-                {"faultCode"=>"-1",
-                 "faultString"=> @error_message}}}}
-        @error_request = Endeca::Request.new(@path)
-        @error_request.stub!(:handle_response).and_return(@error_response)
+        @curl_obj = mock(:response_code => 404)
+        Curl::Easy.stub!(:perform).and_return(@curl_obj)
       end
       
       it "should raise an Endeca::RequestError" do
-        lambda { @error_request.perform }.should raise_error(Endeca::RequestError, @error_message)
+        lambda {@request.perform}.should raise_error(Endeca::RequestError, "404 HTTP Error")
+      end
+    
+    end
+    
+    describe "Yajl parser" do
+      it "should return Endeca::RequestError when malformed JSON is returned"
+        @curl_obj = mock(:response_code => 200, :body_str => "!@!@#@SDSD}")
+        Curl::Easy.stub!(:perform).and_return(@curl_obj)
+        lambda {@request.perform}.should raise_error(Endeca::RequestError)
       end
     end
-
-  end
+    
+    describe "when the response contains an error hash" do
+         before do
+           @error_message = "com.endeca.soleng.urlformatter.QueryBuildException: com.endeca.navigation.UrlENEQueryParseException: java.lang.NumberFormatException: For input string: \"asdjkhfgasdfjkhg\""
+           @error_response = {
+             "methodResponse"=>
+               {"fault"=>
+                 {"value"=>
+                   {"faultCode"=>"-1",
+                    "faultString"=> @error_message}}}}
+           @error_request = Endeca::Request.new(@path)
+           @error_request.stub!(:handle_response).and_return(@error_response)
+         end
+         
+         it "should raise an Endeca::RequestError" do
+           lambda { @error_request.perform }.should raise_error(Endeca::RequestError, @error_message)
+         end
+       end
 
   describe '#uri' do
     
@@ -83,15 +92,6 @@ describe Endeca::Request do
       it "should append the query options onto the url" do
         query = {:foo => :bar}
         Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
-      end
-      
-    end
-    
-    describe "with a query with '/_/' in it" do
-      
-      it "should not insert the ? before the query" do
-        query = "/Beds-2/Baths-3/Dishwasher/_/N=324432/Ne=listing?test=true"
-        Endeca::Request.new(@path, query).uri.to_s.should == "#{@path}#{query}"
       end
       
     end
