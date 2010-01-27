@@ -46,26 +46,12 @@ module Endeca
       debug && logger && benchmark
     end
 
-    def timer
-      @timer ||= get_timer
-    end
-
-    private
-
-    def get_timer
-      require 'system_timer'
-      SystemTimer
-    rescue LoadError
-      require 'timeout'
-      Timeout
-    end
   end
 
   self.logger = Logger.new(STDOUT)
   self.debug  = false
   self.benchmark  = false
   self.timeout = 8
-
 
   # Endeca URIs require colons to be escaped
   def self.escape(str)
