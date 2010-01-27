@@ -1,22 +1,10 @@
-# Look in the tasks/setup.rb file for the various options that can be
-# configured in this Rakefile. The .rake files in the tasks directory
-# are where the options are used.
+require 'rubygems'
 
-begin
-  require 'bones'
-  Bones.setup
-rescue LoadError
-  begin
-    load 'tasks/setup.rb'
-  rescue LoadError
-    raise RuntimeError, '### please install the "bones" gem ###'
-  end
-end
+require File.join(File.dirname(__FILE__),'lib', 'endeca')
 
-begin; require 'metric_fu'; rescue LoadError; end
-
-ensure_in_path 'lib'
-require 'endeca'
+desire('rake')
+desire('rcov')
+desire('spec/rake/spectask')
 
 task :default => 'rcov'
 
@@ -39,14 +27,18 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
   t.rcov_opts = IO.readlines("spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
 end
 
-PROJ.name = 'endeca'
-PROJ.authors = ['Rein Henrichs', 'Andy Stone']
-PROJ.email = ''
-PROJ.url = 'http://github.com/primedia/endeca-ruby'
-PROJ.version = Endeca::VERSION
-PROJ.rubyforge.name = 'endeca'
-PROJ.readme_file = "README.rdoc"
-PROJ.exclude << '.swp'
-PROJ.exclude << '.gitignore'
-
-# EOF
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "endeca"
+    gemspec.version = Endeca.version
+    gemspec.summary = "Endeca adapter for use with the Endeca Bridge"
+    gemspec.email = ""
+    gemspec.homepage = 'http://github.com/primedia/endeca-ruby'
+    gemspec.authors = ["Primedia Team"]
+    gemspec.add_development_dependency('rspec')
+  end
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+end
