@@ -24,6 +24,8 @@ module Endeca
     end
 
     def uri
+      return @uri if @uri
+
       path_query = query_string
       @uri = path_query ? "#{@path}?#{path_query}" : @path
     end

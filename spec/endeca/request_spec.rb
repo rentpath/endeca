@@ -31,7 +31,7 @@ describe Endeca::Request do
       before do
         @response_json = "{\"foo\":\"bar\"}"
         @response_hash = {"foo" => "bar"}
-        @curl_obj = mock(:body_str => @response_json)
+        @curl_obj = mock(:response_code => 200, :body_str => @response_json)
         Curl::Easy.stub!(:perform).and_return(@curl_obj)
       end
 
@@ -90,7 +90,7 @@ describe Endeca::Request do
     describe "with a hash of query options" do
       it "should append the query options onto the url" do
         query = {:foo => :bar}
-        Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
+        URI.parse(Endeca::Request.new(@path, query).uri).query.should == query.to_endeca_params
       end
     end
   end
@@ -98,7 +98,7 @@ describe Endeca::Request do
   describe "with a string of query options" do
     it "should append the query options string onto the url" do
       query = 'N=56'
-      Endeca::Request.new(@path, query).uri.query.should == query.to_endeca_params
+      URI.parse(Endeca::Request.new(@path, query).uri).query.should == query.to_endeca_params
     end
   end
 end
