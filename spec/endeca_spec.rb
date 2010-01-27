@@ -14,24 +14,6 @@ describe Endeca do
     Endeca.escape(query).should == 'N=5875%205922&Nf=geocode%7CGCLT%2026.121900,-80.143600%2032.18688&Nu=mgtcoid&Ns=searchonly%7C0%7C%7Cisapartment%7C1%7C%7Csortorder%7C0&Ntk=showapartment%7Cmgtcologodisplay&F=cityseopath%3A1%7Cmediummgtcologo%3A1%7Cmgtcodescription%3A1%7Cmgtcoid%3A1%7Cmgtcologo%3A1%7Cmgtcologodisplay%3A1%7Cmgtconame%3A1%7Cmsa_code%3A1%7Cpropertycity%3A1%7Cpropertystatelong%3A1%7Csmallmgtcologo%3A1%7Cwebtollfree%3A1%7Cmvtphone%3A1&Ntt=1%7C1&M=recs_per_page%3A99999%7Cexpand_all_dims%3A0'
 
   end
-
-  describe "#get_timer" do
-    it "without system_timer available returns Timeout" do
-      Endeca.should_receive(:require).
-        with('system_timer').and_raise(LoadError)
-      Endeca.should_receive(:require).
-        with('timeout').and_return(true)
-
-      Endeca.send(:get_timer).should == Timeout
-    end
-
-    it "will return SystemTimer if available" do
-      Endeca.should_receive(:require).
-        with('system_timer').and_return(true)
-
-      Endeca.send(:get_timer).should == SystemTimer
-    end
-  end
 end
 
 # EOF
