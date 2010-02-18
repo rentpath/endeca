@@ -44,13 +44,6 @@ describe Endeca::Breadcrumb do
     end
   end
   
-  describe ".to_proc" do
-    it "should call create" do
-      Endeca::Breadcrumb.should_receive(:create).with(:obj)
-      [:obj].map(&Endeca::Breadcrumb)
-    end
-  end
-
   describe '#==' do
     it "should compare Breadcrumbs by name" do
       doc_1, doc_2 = Endeca::Breadcrumb.new, Endeca::Breadcrumb.new
