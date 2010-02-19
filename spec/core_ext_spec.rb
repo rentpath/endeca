@@ -1,5 +1,25 @@
 require File.join(File.dirname(__FILE__), %w[spec_helper])
 
+class TestClass
+  def self.desire_it
+    desire 'mylib'
+  end
+end
+
+describe TestClass do
+  describe "#desire" do
+    it "should require lib" do
+      TestClass.should_receive(:require).with('mylib').and_return(true)
+      TestClass.desire_it
+    end
+
+    it "should rescue LoadError and return false" do
+      TestClass.should_receive(:require).with('mylib').and_raise(LoadError.new('mylib not found'))
+      TestClass.desire_it.should == false
+    end
+  end
+end
+
 describe Array do
   describe "#to_endeca_params" do
     it "should join the elements with ampersand" do
@@ -28,6 +48,12 @@ describe Benchmark do
     it "should be 1000 times the realtime value" do
       Benchmark.stub!(:realtime).and_return(1)
       Benchmark.ms.should == 1000
+    end
+  end
+
+  describe "for version < 1.8.7" do
+    it "should remove realtime method" do
+      #Object.should_receive(:ruby_version).and_return('1.8.6')
     end
   end
 end
