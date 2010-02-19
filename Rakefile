@@ -36,6 +36,8 @@ begin
     gemspec.email = ""
     gemspec.homepage = 'http://github.com/primedia/endeca-ruby'
     gemspec.authors = ["Primedia Team"]
+    gemspec.add_dependency('curb','=0.6.6.0')
+    gemspec.add_dependency('yajil-ruby','=0.7.1')
     gemspec.add_development_dependency('rspec')
   end
   Jeweler::GemcutterTasks.new
