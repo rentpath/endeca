@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
      "Manifest.txt",
      "README.rdoc",
      "Rakefile",
+     "endeca.gemspec",
      "example/benchmark.rb",
      "example/listing.rb",
      "lib/core_ext.rb",
