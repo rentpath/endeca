@@ -1,5 +1,3 @@
-require 'benchmark'
-
 module Endeca
   module Benchmarking
     # Log and benchmark the workings of a single block. Will only be called if
