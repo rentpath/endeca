@@ -27,6 +27,12 @@ describe Endeca::Request do
       @request.perform
     end    
 
+    describe "get response" do
+      it "shouse raise RequestError on exception" do
+        Curl::Easy.stub!(:perform).and_raise("Error happened")
+        lambda {@request.perform}.should raise_error(Endeca::RequestError, "Error happened")
+      end
+    end
     describe "when successful" do
       before do
         @response_json = "{\"foo\":\"bar\"}"
