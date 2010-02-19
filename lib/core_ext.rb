@@ -9,6 +9,10 @@ module Kernel
 end
 
 class Object
+  def self.ruby_version
+    RUBY_VERSION
+  end
+
   def blank?
     respond_to?(:empty?) ? empty? : !self
   end
@@ -23,7 +27,7 @@ end
 require 'benchmark'
 class << Benchmark
   # Earlier Ruby had a slower implementation.
-  if RUBY_VERSION < '1.8.7'
+  if ruby_version < '1.8.7'
     remove_method :realtime
 
     def realtime
