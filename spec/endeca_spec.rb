@@ -14,6 +14,34 @@ describe Endeca do
     Endeca.escape(query).should == 'N=5875%205922&Nf=geocode%7CGCLT%2026.121900,-80.143600%2032.18688&Nu=mgtcoid&Ns=searchonly%7C0%7C%7Cisapartment%7C1%7C%7Csortorder%7C0&Ntk=showapartment%7Cmgtcologodisplay&F=cityseopath%3A1%7Cmediummgtcologo%3A1%7Cmgtcodescription%3A1%7Cmgtcoid%3A1%7Cmgtcologo%3A1%7Cmgtcologodisplay%3A1%7Cmgtconame%3A1%7Cmsa_code%3A1%7Cpropertycity%3A1%7Cpropertystatelong%3A1%7Csmallmgtcologo%3A1%7Cwebtollfree%3A1%7Cmvtphone%3A1&Ntt=1%7C1&M=recs_per_page%3A99999%7Cexpand_all_dims%3A0'
 
   end
+
+  it "#anaylze" do
+    Endeca.should_receive(:debug?).and_return(true)
+    Endeca.should_receive(:benchmark?).and_return(true)
+
+    Endeca.analyze?
+  end
+
+  it "#debug?" do
+    ENV['ENDECA_DEBUG'] = 'true'
+
+    Endeca.debug?.should == true
+
+    ENV['ENDECA_DEBUG'] = 'false'
+
+    Endeca.debug?.should == false
+  end
+
+  it "#benchmark?" do
+    ENV['ENDECA_BENCHMARK'] = 'true'
+
+    Endeca.benchmark?.should == true
+
+    ENV['ENDECA_BENCHMARK'] = 'false'
+
+    Endeca.benchmark?.should == false
+  end
+
 end
 
 # EOF

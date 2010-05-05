@@ -13,10 +13,17 @@ module Endeca
       @query = query
     end
 
-    def perform
-      raise RequestError, endeca_error[:message] if endeca_error?
-      Endeca.increase_metric(:request_count, 1)
-      return response
+    if Endeca.analyze?
+      def perform
+        raise RequestError, endeca_error[:message] if endeca_error?
+        Endeca.increase_metric(:request_count, 1)
+        return response
+      end
+    else
+      def perform
+        raise RequestError, endeca_error[:message] if endeca_error?
+        return response
+      end
     end
     
     def response
@@ -47,37 +54,63 @@ module Endeca
       !endeca_error.nil?
     end
 
-    def get_response #:nodoc:
-       Endeca.log "ENDECA ADAPTER REQUEST"
-       Endeca.log "    parameters => " + @query.inspect
-       Endeca.log "           uri => " + uri.to_s
-       Endeca.bm(:request_time, "#{@path} #{@query.inspect}") do 
-         begin
-           @response = Curl::Easy.perform(uri.to_s) do |curl|
-             curl.timeout = Endeca.timeout
-           end
-         rescue => e
-           raise RequestError, e.message
-         end
-       end
-
-       return @response
-     end
-
-     def handle_response(response) #:nodoc:
-       case response.response_code.to_s
-       when "200"
-         Endeca.bm :parse_time do
+    if Endeca.analyze?
+      def get_response #:nodoc:
+         Endeca.log "ENDECA ADAPTER REQUEST"
+         Endeca.log "    parameters => " + @query.inspect
+         Endeca.log "           uri => " + uri.to_s
+         Endeca.bm(:request_time, "#{@path} #{@query.inspect}") do 
            begin
-             @json = Yajl::Parser.parse(response.body_str)
-           rescue Yajl::ParseError => e
-             raise RequestError, "JSON Parse error: #{e}"
+             @response = Curl::Easy.perform(uri.to_s) do |curl|
+               curl.timeout = Endeca.timeout
+             end
+           rescue => e
+             raise RequestError, e.message
            end
          end
-       else
-         raise RequestError, "#{response.response_code} HTTP Error"
+
+         return @response
        end
-     end
+    else
+      def get_response #:nodoc:
+        Curl::Easy.perform(uri.to_s) do |curl|
+          curl.timeout = Endeca.timeout
+        end
+      rescue => e
+        raise RequestError, e.message
+      end
+    end
+    
+    if Endeca.analyze?
+    
+      def handle_response(response) #:nodoc:
+        case response.response_code.to_s
+        when "200"
+          Endeca.bm :parse_time do
+            begin
+              Yajl::Parser.parse(response.body_str)
+            rescue Yajl::ParseError => e
+              raise RequestError, "JSON Parse error: #{e}"
+            end
+          end
+        else
+          raise RequestError, "#{response.response_code} HTTP Error"
+        end
+      end
+    else
+      def handle_response(response) #:nodoc:
+        case response.response_code.to_s
+        when "200"
+          begin
+            Yajl::Parser.parse(response.body_str)
+          rescue Yajl::ParseError => e
+            raise RequestError, "JSON Parse error: #{e}"
+          end
+        else
+          raise RequestError, "#{response.response_code} HTTP Error"
+        end
+      end
+    end
 
      def query_string
        @path.match(/\?(.*)$/)

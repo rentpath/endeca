@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{endeca}
-  s.version = "1.4.2"
+  s.version = "1.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Primedia Team"]
-  s.date = %q{2010-02-19}
+  s.date = %q{2010-05-04}
   s.email = %q{}
   s.extra_rdoc_files = [
     "README.rdoc"
