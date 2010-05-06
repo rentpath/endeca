@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Primedia Team"]
-  s.date = %q{2010-05-04}
+  s.date = %q{2010-05-06}
   s.email = %q{}
   s.extra_rdoc_files = [
     "README.rdoc"
@@ -43,6 +43,7 @@ Gem::Specification.new do |s|
      "spec/endeca/dimension_spec.rb",
      "spec/endeca/document_collection_spec.rb",
      "spec/endeca/document_spec.rb",
+     "spec/endeca/logging_spec.rb",
      "spec/endeca/map_spec.rb",
      "spec/endeca/readers_spec.rb",
      "spec/endeca/refinement_dimension_spec.rb",
@@ -67,6 +68,7 @@ Gem::Specification.new do |s|
      "spec/endeca/request_spec.rb",
      "spec/endeca/transformer_spec.rb",
      "spec/endeca/breadcrumb_spec.rb",
+     "spec/endeca/logging_spec.rb",
      "spec/endeca/document_spec.rb",
      "spec/endeca/refinement_spec.rb",
      "spec/endeca/map_spec.rb",
