@@ -116,7 +116,7 @@ describe Endeca::Map do
       map = Endeca::Map.new :foo
       map.into(:Ntk => :Ntt)
       map.inspect.should include(":Ntk=>\"foo\"")
-      map.inspect.should include(":Ntt=>\"\"")
+      map.inspect.should include(":Ntt=>\"inspect_data\"")
     end
   end
 end
