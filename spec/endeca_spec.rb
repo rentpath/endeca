@@ -15,6 +15,13 @@ describe Endeca do
 
   end
 
+  it "#anaylze" do
+    Endeca.should_receive(:debug?).and_return(true)
+    Endeca.should_receive(:benchmark?).and_return(true)
+
+    Endeca.analyze?
+  end
+
   it "#debug?" do
     ENV['ENDECA_DEBUG'] = 'true'
 
