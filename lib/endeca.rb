@@ -27,10 +27,6 @@ module Endeca
     attr_accessor :logger
     attr_accessor :timeout
 
-    def analyze?
-      debug? && benchmark?
-    end
-
     def debug?
       ENV['ENDECA_DEBUG'] == 'true' 
     end

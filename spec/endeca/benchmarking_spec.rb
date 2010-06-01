@@ -10,7 +10,7 @@ describe Endeca::Benchmarking do
       @logger = mock('Logger')
 
       Endeca.stub!(:logger).and_return(@logger)
-      Endeca.stub!(:debug => true, :benchmark => true)
+      Endeca.stub!(:benchmark => true)
 
       Benchmark.stub!(:ms => 1)
     end
@@ -23,8 +23,6 @@ describe Endeca::Benchmarking do
 
   describe "#add_bm_detail" do
     it "should add info to the current thread" do
-      Endeca.stub!(:analyze?).and_return(true)
-
       Endeca.send(:add_bm_detail, :metric, 1.1, 'query query')
 
       Thread.current[:endeca]["metric_detail"][0].should == {:detail => "query query", :time => 1.1}
