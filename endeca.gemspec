@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{endeca}
-  s.version = "1.5.0"
+  s.version = "1.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Primedia Team"]
-  s.date = %q{2010-05-06}
+  s.date = %q{2010-06-03}
   s.email = %q{}
   s.extra_rdoc_files = [
     "README.rdoc"
@@ -58,23 +58,23 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/primedia/endeca-ruby}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Endeca adapter for use with the Endeca Bridge}
   s.test_files = [
-    "spec/endeca_spec.rb",
-     "spec/core_ext_spec.rb",
+    "spec/core_ext_spec.rb",
+     "spec/endeca/benchmarking_spec.rb",
+     "spec/endeca/breadcrumb_spec.rb",
+     "spec/endeca/dimension_spec.rb",
      "spec/endeca/document_collection_spec.rb",
+     "spec/endeca/document_spec.rb",
+     "spec/endeca/logging_spec.rb",
+     "spec/endeca/map_spec.rb",
      "spec/endeca/readers_spec.rb",
+     "spec/endeca/refinement_dimension_spec.rb",
+     "spec/endeca/refinement_spec.rb",
      "spec/endeca/request_spec.rb",
      "spec/endeca/transformer_spec.rb",
-     "spec/endeca/breadcrumb_spec.rb",
-     "spec/endeca/logging_spec.rb",
-     "spec/endeca/document_spec.rb",
-     "spec/endeca/refinement_spec.rb",
-     "spec/endeca/map_spec.rb",
-     "spec/endeca/refinement_dimension_spec.rb",
-     "spec/endeca/dimension_spec.rb",
-     "spec/endeca/benchmarking_spec.rb",
+     "spec/endeca_spec.rb",
      "spec/spec_helper.rb"
   ]
 
