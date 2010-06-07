@@ -126,7 +126,7 @@ module Endeca
     end
 
     def inspect
-      perform({ @old_key  => "inspect_data" }).inspect
+      perform({ @old_key  => "" }).inspect
     end
 
     private
