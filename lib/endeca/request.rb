@@ -62,7 +62,7 @@ module Endeca
         Endeca.bm(:request_time, "#{@path} #{@query.inspect}") do 
           begin
             Curl::Easy.perform(uri.to_s) do |curl|
-              curl.timeout = Endeca.timeout
+              curl.connect_timeout = Endeca.timeout
             end
           rescue => e
             raise RequestError, e.message
@@ -75,7 +75,7 @@ module Endeca
         Endeca.log "    parameters => " + @query.inspect
         Endeca.log "           uri => " + uri.to_s
         Curl::Easy.perform(uri.to_s) do |curl|
-          curl.timeout = Endeca.timeout
+          curl.connect_timeout = Endeca.timeout
         end
       rescue => e
         raise RequestError, e.message
@@ -83,7 +83,7 @@ module Endeca
     else
       def get_response #:nodoc:
         Curl::Easy.perform(uri.to_s) do |curl|
-          curl.timeout = Endeca.timeout
+          curl.connect_timeout = Endeca.timeout
         end
       rescue => e
         raise RequestError, e.message

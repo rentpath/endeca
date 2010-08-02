@@ -38,7 +38,9 @@ module Endeca
   end
 
   self.logger = Logger.new(STDOUT)
-  self.timeout = 8
+
+  # Number of seconds until connection should time out.
+  self.timeout = 2
 
   # Endeca URIs require colons to be escaped
   def self.escape(str)
