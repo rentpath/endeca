@@ -66,7 +66,15 @@ module Endeca
       # ==== Examples
       #   float_reader :latitude, :longitude
       def float_reader(*attrs)
-        reader(*attrs) { |value| Float(value) if value }
+        reader(*attrs) do |value| 
+          if value 
+            if value.respond_to?(:to_f)
+              value.to_f
+            else 
+              Float(value) 
+            end
+          end
+        end
       end
 
       # Typecasts attributes as a Perly boolean ("0" == false, "1" == true")
