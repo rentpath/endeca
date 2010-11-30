@@ -21,6 +21,7 @@ end
 
 desc "Run all specs and rcov in a non-sucky way"
 Spec::Rake::SpecTask.new(:rcov) do |t|
+  $: << File.join(File.dirname(__FILE__), 'spec')
   t.spec_opts = IO.readlines("spec/spec.opts").map {|l| l.chomp.split " "}.flatten
   t.spec_files = FileList['spec/**/*_spec.rb']
   t.rcov = true

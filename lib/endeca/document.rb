@@ -86,14 +86,14 @@ DefaultParams:\n\t#{get_default_params.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.t
     #   Listing.find(:first, :available => true)
     def self.find(what, query_options={})
       case what
-      when Integer, /^[A-Za-z\d]+$/
-        by_id(what, query_options)
-      when String
-        all(what)
       when :first
         first(query_options)
       when :all
         all(query_options)
+      when Integer, /^[A-Za-z\d]+$/
+        by_id(what, query_options)
+      when String
+        all(what)
       else
         all(what)
       end
