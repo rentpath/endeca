@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), %w[.. spec_helper])
+require 'spec_helper'
 
 describe Endeca::Document do
   before do
@@ -383,7 +383,8 @@ describe Endeca::Document do
 
   describe "#inspect" do
     it "should return details of the Document class" do
-      Endeca::Document.inspect.should == "#<Endeca::Document>\nPath: \"http://endeca.example.com\"\nCollection Class: SubDocumentCollection\"\nMappings:\n\tfoo: {:new_foo=>\"\"}\n\t \nDefaultParams:\n\t \n"
+      Endeca::Document.inspect.should include "#<Endeca::Document>\nPath: \"http://endeca.example.com\"\nCollection Class: SubDocumentCollection\"\nMappings:"
+      Endeca::Document.inspect.should include "foo: {:new_foo=>"
     end
   end
 end

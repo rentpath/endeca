@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), %w[.. spec_helper])
+require 'spec_helper'
 
 describe Endeca::Dimension do
   describe ".new" do

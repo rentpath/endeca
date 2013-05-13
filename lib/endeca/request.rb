@@ -45,8 +45,8 @@ module Endeca
       values = fault && fault["value"]
       return nil unless values
       {
-        :code => values["faultCode"].to_i,
-        :message => values["faultString"]
+        code: values["faultCode"].to_i,
+        message: values["faultString"]
       }
     end
 
@@ -59,7 +59,7 @@ module Endeca
         Endeca.log "ENDECA ADAPTER REQUEST"
         Endeca.log "    parameters => " + @query.inspect
         Endeca.log "           uri => " + uri.to_s
-        Endeca.bm(:request_time, "#{@path} #{@query.inspect}") do 
+        Endeca.bm(:request_time, "#{@path} #{@query.inspect}") do
           begin
             Curl::Easy.perform(uri.to_s) do |curl|
               curl.connect_timeout = Endeca.timeout
