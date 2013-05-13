@@ -10,7 +10,7 @@ require 'rake/testtask'
 
 require 'rubygems'
 
-require File.join(File.dirname(__FILE__),'lib', 'endeca')
+require_relative 'lib/endeca'
 
 task :default => 'spec'
 
@@ -33,4 +33,3 @@ desc "Flog your code for Justice!"
 task :flog do
   sh('flog lib/**/*.rb')
 end
-
