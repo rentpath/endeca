@@ -1,7 +1,10 @@
+require File.dirname(__FILE__) + '/lib/endeca'
+
 begin
   require 'bundler'
   Bundler::GemHelper.install_tasks
 rescue Exception
+  puts $!, $@
 end
 
 require "rspec"
@@ -10,7 +13,7 @@ require 'rake/testtask'
 
 require 'rubygems'
 
-require_relative 'lib/endeca'
+# require_relative 'lib/endeca'
 
 task :default => 'spec'
 
