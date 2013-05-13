@@ -4,9 +4,9 @@ require 'logger'
 require 'uri'
 
 $:.unshift(File.dirname(__FILE__))
-require 'core_ext'
-require 'endeca/logging'
-require 'endeca/benchmarking'
+require_relative 'core_ext'
+require_relative 'endeca/logging'
+require_relative 'endeca/benchmarking'
 
 module Endeca
   extend Benchmarking
@@ -28,7 +28,7 @@ module Endeca
     attr_accessor :timeout
 
     def debug?
-      ENV['ENDECA_DEBUG'] == 'true' 
+      ENV['ENDECA_DEBUG'] == 'true'
     end
 
     def benchmark?
@@ -48,16 +48,16 @@ module Endeca
   end
 end
 
-require 'endeca/readers'
-require 'endeca/map'
-require 'endeca/transformer'
-require 'endeca/dimension'
-require 'endeca/refinement_dimension'
-require 'endeca/refinement'
-require 'endeca/breadcrumbs'
-require 'endeca/breadcrumb'
-require 'endeca/request'
-require 'endeca/document_collection'
-require 'endeca/document'
+require_relative 'endeca/readers'
+require_relative 'endeca/map'
+require_relative 'endeca/transformer'
+require_relative 'endeca/dimension'
+require_relative 'endeca/refinement_dimension'
+require_relative 'endeca/refinement'
+require_relative 'endeca/breadcrumbs'
+require_relative 'endeca/breadcrumb'
+require_relative 'endeca/request'
+require_relative 'endeca/document_collection'
+require_relative 'endeca/document'
 
 puts ">> Using Endeca gem version: #{Endeca::VERSION}"
