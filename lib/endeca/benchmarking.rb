@@ -22,7 +22,7 @@ module Endeca
     def add_bm_detail(label,time,detail)
       Thread.current[:endeca] ||= {}
       Thread.current[:endeca]["#{label}_detail"] ||= []
-      Thread.current[:endeca]["#{label}_detail"] << {:detail => detail, :time => time} 
+      Thread.current[:endeca]["#{label}_detail"] << {detail: detail, time: time}
     end
   end
 end

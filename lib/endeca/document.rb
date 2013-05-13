@@ -13,10 +13,10 @@ module Endeca
     inherited_property :path
     inherited_property :default_params, {}
     inherited_property :collection_class, DocumentCollection
-    
+
     inherited_accessor :reader_names, []
     def self.field_names; reader_names; end
-    
+
     reader :id
 
     attr_reader :raw, :properties
@@ -36,8 +36,8 @@ module Endeca
 #<#{self}>
 Path: #{get_path.inspect}
 Collection Class: #{get_collection_class.inspect}"
-Mappings:\n\t#{mappings.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.to_s} 
-DefaultParams:\n\t#{get_default_params.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.to_s} 
+Mappings:\n\t#{mappings.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.to_s}
+DefaultParams:\n\t#{get_default_params.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.to_s}
       INSPECT
     end
 
@@ -78,7 +78,7 @@ DefaultParams:\n\t#{get_default_params.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.t
     #   Listing.find('1') # returns the Document for ID = 1
     #
     #   # find all
-    #   Listing.find(:all) # returns a collection of Documents 
+    #   Listing.find(:all) # returns a collection of Documents
     #   Listing.find(:all, :available => true)
     #
     #   # find first
@@ -86,14 +86,14 @@ DefaultParams:\n\t#{get_default_params.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.t
     #   Listing.find(:first, :available => true)
     def self.find(what, query_options={})
       case what
-      when Integer, /^[A-Za-z\d]+$/
-        by_id(what, query_options)
-      when String
-        all(what)
       when :first
         first(query_options)
       when :all
         all(query_options)
+      when Integer, /^[A-Za-z\d]+$/
+        by_id(what, query_options)
+      when String
+        all(what)
       else
         all(what)
       end
@@ -103,7 +103,7 @@ DefaultParams:\n\t#{get_default_params.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.t
     # Returns the first Document matching the query options.
     def self.first(query_options={})
       response = request(query_options)
-      record = if response['AggrRecords'] 
+      record = if response['AggrRecords']
         response['AggrRecords'].first['Records'].first
       elsif response['Records']
         response['Records'].first
@@ -121,7 +121,7 @@ DefaultParams:\n\t#{get_default_params.collect{|k,v| "#{k}: #{v.inspect}\n\t"}.t
 
     # Returns a Document by id
     def self.by_id(id, query_options={})
-      first(query_options.merge(:id => id, :skip_default_endeca_parameters => true))
+      first(query_options.merge(id: id, skip_default_endeca_parameters: true))
     end
 
     private

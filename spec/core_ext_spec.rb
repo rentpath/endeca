@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), %w[spec_helper])
+require 'spec_helper'
 
 class TestClass
   def self.desire_it
@@ -33,27 +33,16 @@ describe Array do
 end
 
 describe Benchmark do
-  describe ".realtime" do
-    it "should check the time twice" do
-      Time.should_receive(:now).exactly(2).times
-      Benchmark.realtime(){}
-    end
-
+  describe "#realtime" do
     it "should return the time difference as a float" do
       Benchmark.realtime(){}.should be_a_kind_of(Float)
     end
   end
-  
-  describe ".ms" do
+
+  describe "#ms" do
     it "should be 1000 times the realtime value" do
       Benchmark.stub!(:realtime).and_return(1)
       Benchmark.ms.should == 1000
-    end
-  end
-
-  describe "for version < 1.8.7" do
-    it "should remove realtime method" do
-      #Object.should_receive(:ruby_version).and_return('1.8.6')
     end
   end
 end
@@ -92,7 +81,7 @@ describe String do
     it "should URI escape the contents" do
       '|'.to_endeca_params.should == '%7C'
     end
-    
+
     it "should URI escape a colon" do
       ':'.to_endeca_params.should == "%3A"
     end
@@ -100,7 +89,7 @@ describe String do
 end
 
 describe "#inherited_accessor" do
-    
+
   class SomeParent
     inherited_accessor :a_hash, {:m => "my_value"}
     inherited_accessor :a_string, "fibby foo"
