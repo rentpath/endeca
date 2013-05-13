@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "endeca.gemspec",
+    ".rspec",
     "example/benchmark.rb",
     "example/listing.rb",
     "lib/core_ext.rb",
@@ -51,7 +52,6 @@ Gem::Specification.new do |s|
     "spec/endeca/transformer_spec.rb",
     "spec/endeca_spec.rb",
     "spec/rcov.opts",
-    "spec/spec.opts",
     "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/primedia/endeca-ruby}
