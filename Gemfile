@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'curb', '0.7.15'
+gem 'curb', '~> 0.8.4'
 gem 'yajl-ruby', '1.1.0'
 
 group :development do
