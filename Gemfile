@@ -4,7 +4,7 @@ gem 'curb', '~> 0.8.4'
 gem 'yajl-ruby', '1.1.0'
 
 group :development do
-  gem 'rake', '~> 0.9.2.2'
+  gem 'rake', '~> 12.3.3'
   gem 'flog'
 end
 
