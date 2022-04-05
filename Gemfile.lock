@@ -25,7 +25,7 @@ GEM
     simplecov-html (0.5.3)
     simplecov-rcov (0.2.3)
       simplecov (>= 0.4.1)
-    yajl-ruby (1.1.0)
+    yajl-ruby (1.4.2)
 
 PLATFORMS
   ruby
@@ -37,4 +37,4 @@ DEPENDENCIES
   rspec (~> 2.10.0)
   simplecov (~> 0.5.4)
   simplecov-rcov (~> 0.2.3)
-  yajl-ruby (= 1.1.0)
+  yajl-ruby (= 1.4.2)

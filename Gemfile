@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'curb', '~> 0.8.4'
-gem 'yajl-ruby', '1.1.0'
+gem 'yajl-ruby', '1.4.2'
 
 group :development do
   gem 'rake', '~> 0.9.2.2'
